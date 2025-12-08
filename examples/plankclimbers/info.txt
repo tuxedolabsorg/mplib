@@ -1,0 +1,5 @@
+name = Plank Climbers
+author = Tuxedo Labs
+description = Ascend as far as you can. mplib showcase mod.
+version = 2
+
