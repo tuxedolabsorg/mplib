@@ -281,18 +281,18 @@ a:target + * {
 
 
 /* styles for prettification of source */
-pre .comment { color: #558817; }
+pre .comment { color: #94c558; }
 pre .constant { color: #a8660d; }
 pre .escape { color: #844631; }
 pre .keyword { color: #aa5050; font-weight: bold; }
 pre .library { color: #0e7c6b; }
 pre .marker { color: #512b1e; background: #fedc56; font-weight: bold; }
-pre .string { color: #e6a168; }
+pre .string { color: #dfcc6d; }
 pre .number { color: #f8660d; }
-pre .function-name { color: #aa5050; }
+pre .function-name { color: #d79538; }
 pre .operator { color: #2239a8; font-weight: bold; }
 pre .preprocessor, pre .prepro { color: #a33243; }
-pre .global { color: #82aa50; }
+pre .global { color: #558817; }
 pre .user-keyword { color: #800080; }
 pre .prompt { color: #558817; }
 pre .url { color: #272fc2; text-decoration: underline; }
