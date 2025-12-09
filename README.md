@@ -73,7 +73,7 @@ The exact combination depends on what systems you want to use.
 
 For a working reference, see:
 
-- **The example mod included in this repository**  
+- The example mod included in [`examples/plankclimbers`](examples/plankclimbers/README.md)
 - Teardown’s built-in mod **“Multiplayer Classics”**, which uses most of the modules in `mplib` to implement several game modes
 
 ### 3. Follow the Teardown multiplayer client/server model
