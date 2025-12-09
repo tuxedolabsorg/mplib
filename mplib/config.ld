@@ -1,2 +1,0 @@
-project = 'mplib'
-format = 'markdown'

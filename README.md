@@ -103,6 +103,12 @@ The full API documentation for `mplib` is available here:
 
 https://tuxedolabs.github.io/mplib/
 
+## Contributing
+
+This repository is not currently accepting external pull requests or issues.
+
+For more details, see the [`CONTRIBUTING`](CONTRIBUTING.md) file.
+
 ## License
 
 This project is licensed under the MIT License.  
