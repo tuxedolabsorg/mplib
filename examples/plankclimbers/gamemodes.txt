@@ -1,4 +1,4 @@
 [Plank Climbers]
 path = plankclimbers.lua
 description = Who can ascend the most in 2 minutes??
-preview = 
+preview = preview.jpg
