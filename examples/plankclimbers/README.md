@@ -1,7 +1,8 @@
 # Example - Plank Climbers
 
-This game mode (mod) serves as a basic example of how to incorporate `mplib`
-into a mod.
+This game mode (mod) serves as a basic example of how to incorporate `mplib` into a mod. 
+
+To help understand this example it can be useful to read this document together with the documentation and the code in `plankclimbers.lua`.
 
 ## Description of Plank Climbers
 Plank Climbers is a game mode where your objective is to get as high up as possible. The player that has reached the farthest up during the 2 minutes wins. Players can see the progress of other players by holding `shift` which reveals the scoreboard. The game mode starts with a 5 second countdown to let players know it's about to start. Once the time is up players will be presented with the results screen.
@@ -15,7 +16,7 @@ We will also post a banner notification to notify players whenever there is a ne
 ## mplib
 Plank Climbers only needs to utilize parts of `mplib`.
 
-`mplib` components used in this game mode:
+`mplib` modules used in this game mode:
  - **util**
 
     We want our players to spawn (and respawn) at a random point in the world. We can achieve this by calling `utilGenerateSpawnPoints(20)` which generates 20 random spawn transforms for us. We will pass these to `spawnSetSpawnTransforms` to make the `spawn` module use these points. We could also use these 20 random transforms for other purposes.
@@ -28,7 +29,7 @@ Plank Climbers only needs to utilize parts of `mplib`.
 
  - **countdown**
 
-    We initialize the countdown with a time of 5 seconds by calling `countdownInit(5.0)`. In `server.tick(dt)` we need to call `countdownTick(dt)` to let the timer count down. This function return `true` for as long as the countdown is not done. This allows us to return early and not process any game mode logic until the countdown is complete. The client part of our script can do a similar check by calling `countdownDone()`. This example does that to *not* draw the timer, banners, worldmakers or scoreboard during countdown.
+    We initialize the countdown with a time of 5 seconds by calling `countdownInit(5.0)`. In `server.tick(dt)` we need to call `countdownTick(dt)` to let the timer count down. This function return `true` for as long as the countdown is still ongoing. This allows us to return early and not process any game mode logic until the countdown is complete. The client part of our script can do a similar check by calling `countdownDone()`. This example does that to *not* draw the timer, banners, worldmakers or scoreboard during countdown.
     
 - **hud**
 
