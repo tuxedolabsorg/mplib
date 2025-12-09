@@ -4,15 +4,23 @@
 
 local timelimit = 120
 
--- server only
+-- Server only
 server.time = timelimit
 
--- this shared table is accessible from clients (but clients have read-only access)
+
+-- The shared table is accessible from clients (but clients have read-only access)
+
+-- elevation will hold a table mapping playerId -> Number so that the server can
+-- keep track of the best achieved elevation for each player.
 shared.elevation = {}
+
+-- time will hold the left for the match. This is required for clients to be able to 
+-- draw the timer in the ui. In server.tick() we update this table when a full second
+-- has passed, to save bandwidth.
 shared.time = server.time
 
 function server.init()
-	-- init spawn component and set the default loadout.
+	-- init spawn module and set the default loadout.
 	spawnInit()
 	spawnSetDefaultLoadout({
 		{"plank", 200},
@@ -23,7 +31,7 @@ function server.init()
 
 	-- generate 20 random starting transforms
 	local spawnTransforms = utilGenerateSpawnPoints(20)
-	-- and make our spawn component use these for spawning players
+	-- and make our spawn module use these for spawning players
 	spawnSetSpawnTransforms(spawnTransforms)
 	
 	-- initialize a 5 second countdown for starting of the game.
@@ -46,7 +54,7 @@ function server.tick(dt)
 	server.time = server.time - dt 			-- update time
 	shared.time = math.floor(server.time) 	-- sync only whole seconds to client
 
-	-- Save the highest elevation for each player
+	-- Save the highest elevation for each player in our shared table
 	for p in Players() do
 		local elevation = GetPlayerTransform(p).pos[2]
 		if elevation > shared.elevation[p] then
@@ -61,7 +69,11 @@ function server.tick(dt)
 
 end
 
-
+-- To make it easier to distinguish server/client variables we can
+-- put client-only variables in the client table.
+-- To not need to have the server sync to clients which player is in
+-- the lead, the client can calculate this since each players' elevation
+-- is in the shared table.
 client.bestElevation = 0.0
 client.bestElevationPlayer = -1
 

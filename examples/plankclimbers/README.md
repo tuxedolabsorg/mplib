@@ -23,13 +23,21 @@ Plank Climbers only needs to utilize parts of `mplib`.
 
  - **spawn**
 
-    - By calling `spawnSetDefaultLoadout` we can set the loadout described above. This will make sure that every spawned player is assigned that loudout.
+    - We first initialize the `spawn` module by calling `spawnInit()` when we initialize our game mode (in `server.init()`).
 
-    - The transforms passed to `spawnSetSpawnTransforms` will be used when spawning players.
+    - We can set the loadout described above by calling `spawnSetDefaultLoadout`. This will make sure that every spawned player is assigned that loudout.
 
+    - The transforms passed to `spawnSetSpawnTransforms` will be used when spawning players, picking one random each time.
+
+    - To let the `spawn` module handle respawning for us, we call `spawnTick(dt)` from `server.tick(dt)`. This will moniter when players need to respawn, pick one of the spawn transforms at random as well as equipping the player with our chosen loadout, before respawning that player.
+    
  - **countdown**
 
-    We initialize the countdown with a time of 5 seconds by calling `countdownInit(5.0)`. In `server.tick(dt)` we need to call `countdownTick(dt)` to let the timer count down. This function return `true` for as long as the countdown is still ongoing. This allows us to return early and not process any game mode logic until the countdown is complete. The client part of our script can do a similar check by calling `countdownDone()`. This example does that to *not* draw the timer, banners, worldmakers or scoreboard during countdown.
+    - We initialize the countdown with a time of 5 seconds by calling `countdownInit(5.0)`. 
+    
+    - In `server.tick(dt)` we need to call `countdownTick(dt)` to let the timer count down. This function return `true` for as long as the countdown is still ongoing. This allows us to return early and not process any game mode logic until the countdown is complete. 
+    
+    - The client part of our script can do a similar check by calling `countdownDone()`. This example does that to *not* draw the timer, banners, worldmakers or scoreboard during countdown.
     
 - **hud**
 
