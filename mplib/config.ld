@@ -1,0 +1,2 @@
+project = 'mplib'
+format = 'markdown'

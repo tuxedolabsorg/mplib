@@ -1,0 +1,316 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>mplib</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/countdown.html">countdown</a></li>
+  <li><a href="../modules/eventlog.html">eventlog</a></li>
+  <li><a href="../modules/hud.html">hud</a></li>
+  <li><a href="../modules/spawn.html">spawn</a></li>
+  <li><a href="../modules/spectate.html">spectate</a></li>
+  <li><a href="../modules/stats.html">stats</a></li>
+  <li><a href="../modules/teams.html">teams</a></li>
+  <li><a href="../modules/tools.html">tools</a></li>
+  <li><a href="../modules/ui.html">ui</a></li>
+  <li><strong>util</strong></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>util</code></h1>
+<p>Multiplayer Level Utility Functions</p>
+
+<p> This module provides utilities for extracting spawn positions, tool spawn locations,
+ and points of interest from level tags, as well as generating valid dynamic spawn points
+ in a level using raycasting and terrain checks.</p>
+<p>
+
+
+<p> Tags Used in FindLocations:</p>
+
+<ul>
+    <li><code>&quot;playerspawn&quot;</code> General player spawn location (used when no team is specified).</li>
+    <li><code>&quot;teamspawn&quot;</code>   Team-specific spawn. Tagged with: teamspawn=1, teamspawn=2, etc.</li>
+    <li><code>&quot;ammospawn&quot;</code>   Tool or ammo loot spawn. Optional: rarity=low</li>
+    <li><code>&quot;pointofinterest&quot;</code> Marks locations of gameplay interest. Optionally: pointofinterest=1, pointofinterest=2</li>
+</ul>
+</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#utilLoadLevelPlayerSpawns">utilLoadLevelPlayerSpawns ([teamId])</a></td>
+	<td class="summary">Loads player spawn transforms from tagged level locations.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#utilLoadLevelToolSpawns">utilLoadLevelToolSpawns ([rarity])</a></td>
+	<td class="summary">Loads tool spawn locations from the level by tag and optional rarity.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#utilLoadLevelPoi">utilLoadLevelPoi ([teamId])</a></td>
+	<td class="summary">Loads points of interest (POIs) from the level.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#utilGenerateSpawnPointLists">utilGenerateSpawnPointLists (densities)</a></td>
+	<td class="summary">Generates multiple lists of spawn transforms with varying densities.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#utilGenerateSpawnPointsDensity">utilGenerateSpawnPointsDensity (density[, existingTransforms])</a></td>
+	<td class="summary">Generates a list of spawn points with the specified density.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#utilGenerateSpawnPoints">utilGenerateSpawnPoints (count[, existingTransforms])</a></td>
+	<td class="summary">Generates a specified number of valid random spawn transforms in the level.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "utilLoadLevelPlayerSpawns"></a>
+    <strong>utilLoadLevelPlayerSpawns ([teamId])</strong>
+    </dt>
+    <dd>
+    Loads player spawn transforms from tagged level locations. </p>
+
+<p> Searches for locations tagged as <code>&quot;playerspawn&quot;</code> or <code>&quot;teamspawn&quot;</code>, and optionally
+ filters them by team ID.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">teamId</span>
+            <span class="types"><span class="type">number</span></span>
+         The numeric team ID to filter by
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+        A list of transforms representing spawn points
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "utilLoadLevelToolSpawns"></a>
+    <strong>utilLoadLevelToolSpawns ([rarity])</strong>
+    </dt>
+    <dd>
+    Loads tool spawn locations from the level by tag and optional rarity. </p>
+
+<p> Finds locations tagged <code>&quot;ammospawn&quot;</code> and filters them by the given rarity value,
+ if specified.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">rarity</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         A string representing the rarity level (e.g. <code>&quot;low&quot;</code>, <code>&quot;medium&quot;</code>, <code>&quot;high&quot;</code>).
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+        A list of transforms representing ammo/tool spawn points
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "utilLoadLevelPoi"></a>
+    <strong>utilLoadLevelPoi ([teamId])</strong>
+    </dt>
+    <dd>
+    Loads points of interest (POIs) from the level. </p>
+
+<p> Looks for locations tagged as <code>&quot;pointofinterest&quot;</code>, optionally filtering by a
+ numeric team ID if POIs are team-specific.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">teamId</span>
+            <span class="types"><span class="type">number</span></span>
+         The numeric team ID to filter by.
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+        A list of transforms (TTransform) representing POIs
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "utilGenerateSpawnPointLists"></a>
+    <strong>utilGenerateSpawnPointLists (densities)</strong>
+    </dt>
+    <dd>
+    Generates multiple lists of spawn transforms with varying densities. </p>
+
+<p> Uses <a href="../modules/util.html#utilGenerateSpawnPoints">utilGenerateSpawnPoints</a> to create a list of transforms for each density level.
+ Densities are specified as a list of floats, where each float represents the density
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">densities</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         A list of density values (e.g. <code>{1.0, 0.66, 0.5}</code>)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+        A list of lists, where each sublist contains transforms (TTransform) for a specific density
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "utilGenerateSpawnPointsDensity"></a>
+    <strong>utilGenerateSpawnPointsDensity (density[, existingTransforms])</strong>
+    </dt>
+    <dd>
+    Generates a list of spawn points with the specified density. </p>
+
+<p> Uses <a href="../modules/util.html#utilGenerateSpawnPoints">utilGenerateSpawnPoints</a> to create a list of transforms based on the given density.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">density</span>
+            <span class="types"><span class="type">number</span></span>
+         A number representing the density of spawn points (e.g. <code>1.0</code> for high density)
+        </li>
+        <li><span class="parameter">existingTransforms</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         A list of existing transforms to avoid overlap
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+        A list of transforms (TTransform) representing valid spawn points
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "utilGenerateSpawnPoints"></a>
+    <strong>utilGenerateSpawnPoints (count[, existingTransforms])</strong>
+    </dt>
+    <dd>
+    Generates a specified number of valid random spawn transforms in the level. </p>
+
+<p> Uses <code>utilGenerateSpawnPoint</code> to test and collect terrain-validated spawn positions.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">count</span>
+            <span class="types"><span class="type">number</span></span>
+         Number of valid spawn points to generate
+        </li>
+        <li><span class="parameter">existingTransforms</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         A list of existing transforms to avoid overlap
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+        A list of transforms (TTransform) representing valid spawn points
+    </ol>
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2025-12-09 10:41:23 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

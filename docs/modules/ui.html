@@ -1,0 +1,604 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>mplib</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/countdown.html">countdown</a></li>
+  <li><a href="../modules/eventlog.html">eventlog</a></li>
+  <li><a href="../modules/hud.html">hud</a></li>
+  <li><a href="../modules/spawn.html">spawn</a></li>
+  <li><a href="../modules/spectate.html">spectate</a></li>
+  <li><a href="../modules/stats.html">stats</a></li>
+  <li><a href="../modules/teams.html">teams</a></li>
+  <li><a href="../modules/tools.html">tools</a></li>
+  <li><strong>ui</strong></li>
+  <li><a href="../modules/util.html">util</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>ui</code></h1>
+<p>UI Helper &amp; Utility Functions</p>
+
+<p> Standardized helpers used across mplib scripts for rendering
+ text, panels, buttons, and player-related visuals.</p>
+<p> These functions
+ unify visual style and behavior for common UI components.</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#uiTextConstrained">uiTextConstrained (text, font, fontSize, maxWidth[, maxLines])</a></td>
+	<td class="summary">Measure how much of a text string fits within given constraints (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#uiDrawTextConstrained">uiDrawTextConstrained (text, font, fontSize, maxWidth[, maxLines])</a></td>
+	<td class="summary">Draw constrained text with error highlighting for overflow debugging (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#uiDrawTextEllipsis">uiDrawTextEllipsis (text, font, fontSize, maxWidth[, maxLines])</a></td>
+	<td class="summary">Draw constrained text that always uses ellipsis when truncated (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#uiGetPlayerImage">uiGetPlayerImage (playerId)</a></td>
+	<td class="summary">Retrieve the preview image path for a player's character (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#uiDrawPlayerImage">uiDrawPlayerImage (playerId, width, height, roundingRadius[, outlineColor[, outlineThickness]])</a></td>
+	<td class="summary">Draw a player's preview image with optional rounded outline (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#uiDrawPlayerRow">uiDrawPlayerRow (playerId[, height], maxWidth[, color[, dim]])</a></td>
+	<td class="summary">Draw a full player row including avatar and player name (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#uiDrawPrimaryButton">uiDrawPrimaryButton (title, width[, disabled])</a></td>
+	<td class="summary">Draw a styled primary action button (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#uiDrawSecondaryButton">uiDrawSecondaryButton (title, width[, disabled])</a></td>
+	<td class="summary">Draw a styled secondary action button (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#uiDrawButton">uiDrawButton (title, width, color, hoverColor, outline[, disabled])</a></td>
+	<td class="summary">Draw a generic button with configurable background, hover colors and outline (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#uiDrawPanel">uiDrawPanel (width, height[, radius])</a></td>
+	<td class="summary">Draw a translucent panel with optional rounded corners (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#uiDrawTextPanel">uiDrawTextPanel (message[, alpha])</a></td>
+	<td class="summary">Draw a text panel with background and padding (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#uiDrawTextAndImagePanel">uiDrawTextAndImagePanel (message, imageItem[, alpha])</a></td>
+	<td class="summary">Draw a panel containing text and an image icon (client).</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "uiTextConstrained"></a>
+    <strong>uiTextConstrained (text, font, fontSize, maxWidth[, maxLines])</strong>
+    </dt>
+    <dd>
+    Measure how much of a text string fits within given constraints (client). </p>
+
+<p> Performs width or multi-line height fitting based on <code>maxLines</code>. If the
+ text does not fit, the function finds the longest substring that fits
+ using a binary search, and appends an ellipsis.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">text</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+           Text to measure
+        </li>
+        <li><span class="parameter">font</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+           Font asset path
+        </li>
+        <li><span class="parameter">fontSize</span>
+            <span class="types"><span class="type">number</span></span>
+          Font size
+        </li>
+        <li><span class="parameter">maxWidth</span>
+            <span class="types"><span class="type">number</span></span>
+          Maximum allowed width
+        </li>
+        <li><span class="parameter">maxLines</span>
+            <span class="types"><span class="type">number</span></span>
+         Maximum number of lines; if omitted, single-line
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">boolean</span></span>
+        fits <code>true</code> if the entire text fits</li>
+        <li>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        displayedText  Either the original text or truncated version</li>
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "uiDrawTextConstrained"></a>
+    <strong>uiDrawTextConstrained (text, font, fontSize, maxWidth[, maxLines])</strong>
+    </dt>
+    <dd>
+    Draw constrained text with error highlighting for overflow debugging (client). </p>
+
+<p> Uses <a href="../modules/ui.html#uiTextConstrained">uiTextConstrained</a> internally. If text overflows, displays the text
+ in red to help identify problematic UI layouts.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">text</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+           Text to draw
+        </li>
+        <li><span class="parameter">font</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+           Font asset path
+        </li>
+        <li><span class="parameter">fontSize</span>
+            <span class="types"><span class="type">number</span></span>
+          Font size
+        </li>
+        <li><span class="parameter">maxWidth</span>
+            <span class="types"><span class="type">number</span></span>
+          Max width before truncation
+        </li>
+        <li><span class="parameter">maxLines</span>
+            <span class="types"><span class="type">number</span></span>
+         Max lines before truncation
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "uiDrawTextEllipsis"></a>
+    <strong>uiDrawTextEllipsis (text, font, fontSize, maxWidth[, maxLines])</strong>
+    </dt>
+    <dd>
+    Draw constrained text that always uses ellipsis when truncated (client). </p>
+
+<p> Similar to <a href="../modules/ui.html#uiDrawTextConstrained">uiDrawTextConstrained</a>, but does not color overflow text red.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">text</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+           Text to draw
+        </li>
+        <li><span class="parameter">font</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+           Font asset path
+        </li>
+        <li><span class="parameter">fontSize</span>
+            <span class="types"><span class="type">number</span></span>
+          Font size
+        </li>
+        <li><span class="parameter">maxWidth</span>
+            <span class="types"><span class="type">number</span></span>
+          Max width allowed
+        </li>
+        <li><span class="parameter">maxLines</span>
+            <span class="types"><span class="type">number</span></span>
+         Max number of lines
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "uiGetPlayerImage"></a>
+    <strong>uiGetPlayerImage (playerId)</strong>
+    </dt>
+    <dd>
+    Retrieve the preview image path for a player's character (client). </p>
+
+<p> Falls back to a default placeholder preview image if none exists.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">playerId</span>
+            <span class="types"><span class="type">number</span></span>
+         Player ID
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        imagePath   Filepath to preview image
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "uiDrawPlayerImage"></a>
+    <strong>uiDrawPlayerImage (playerId, width, height, roundingRadius[, outlineColor[, outlineThickness]])</strong>
+    </dt>
+    <dd>
+    Draw a player's preview image with optional rounded outline (client). </p>
+
+<p> Renders the player avatar using the character preview image. Optionally
+ draws an outline using the player's team color or a provided color array.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">playerId</span>
+            <span class="types"><span class="type">number</span></span>
+         Player ID
+        </li>
+        <li><span class="parameter">width</span>
+            <span class="types"><span class="type">number</span></span>
+          Image width
+        </li>
+        <li><span class="parameter">height</span>
+            <span class="types"><span class="type">number</span></span>
+         Image height
+        </li>
+        <li><span class="parameter">roundingRadius</span>
+            <span class="types"><span class="type">number</span></span>
+          Corner radius
+        </li>
+        <li><span class="parameter">outlineColor</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         {r,g,b,a} color array
+         (<em>optional</em>)
+        </li>
+        <li><span class="parameter">outlineThickness</span>
+            <span class="types"><span class="type">number</span></span>
+         Outline thickness
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "uiDrawPlayerRow"></a>
+    <strong>uiDrawPlayerRow (playerId[, height], maxWidth[, color[, dim]])</strong>
+    </dt>
+    <dd>
+    Draw a full player row including avatar and player name (client). </p>
+
+<p> Displays an avatar, player name, and color-coded status. Used in scoreboards
+ and player lists. Auto-scales height and applies dimming or local-player
+ highlighting.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">playerId</span>
+            <span class="types"><span class="type">number</span></span>
+         Player ID
+        </li>
+        <li><span class="parameter">height</span>
+            <span class="types"><span class="type">number</span></span>
+           Height of the row (default: 32)
+         (<em>optional</em>)
+        </li>
+        <li><span class="parameter">maxWidth</span>
+            <span class="types"><span class="type">number</span></span>
+          Maximum width for name text
+        </li>
+        <li><span class="parameter">color</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+          Override color {r,g,b}
+         (<em>optional</em>)
+        </li>
+        <li><span class="parameter">dim</span>
+            <span class="types"><span class="type">boolean</span></span>
+          Whether to dim the row
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "uiDrawPrimaryButton"></a>
+    <strong>uiDrawPrimaryButton (title, width[, disabled])</strong>
+    </dt>
+    <dd>
+    Draw a styled primary action button (client).
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">title</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+           Button text
+        </li>
+        <li><span class="parameter">width</span>
+            <span class="types"><span class="type">number</span></span>
+           Button width in pixels
+        </li>
+        <li><span class="parameter">disabled</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Disable input
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">boolean</span></span>
+        pressed  <code>true</code> if clicked
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "uiDrawSecondaryButton"></a>
+    <strong>uiDrawSecondaryButton (title, width[, disabled])</strong>
+    </dt>
+    <dd>
+    Draw a styled secondary action button (client).
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">title</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+           Button label
+        </li>
+        <li><span class="parameter">width</span>
+            <span class="types"><span class="type">number</span></span>
+           Button width
+        </li>
+        <li><span class="parameter">disabled</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Disable input
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">boolean</span></span>
+        pressed  <code>true</code> if clicked
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "uiDrawButton"></a>
+    <strong>uiDrawButton (title, width, color, hoverColor, outline[, disabled])</strong>
+    </dt>
+    <dd>
+    Draw a generic button with configurable background, hover colors and outline (client). </p>
+
+<p> Base implementation for all button types in the mplib UI.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">title</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+           Text displayed in button
+        </li>
+        <li><span class="parameter">width</span>
+            <span class="types"><span class="type">number</span></span>
+           Button width
+        </li>
+        <li><span class="parameter">color</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         Background {r,g,b,a}
+        </li>
+        <li><span class="parameter">hoverColor</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+          Hover highlight {r,g,b,a}
+        </li>
+        <li><span class="parameter">outline</span>
+            <span class="types"><span class="type">boolean</span></span>
+           Whether to draw outline
+        </li>
+        <li><span class="parameter">disabled</span>
+            <span class="types"><span class="type">boolean</span></span>
+         Disable interaction
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">boolean</span></span>
+        pressed  <code>true</code> on click
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "uiDrawPanel"></a>
+    <strong>uiDrawPanel (width, height[, radius])</strong>
+    </dt>
+    <dd>
+    Draw a translucent panel with optional rounded corners (client). </p>
+
+<p> Used for modal dialogs, popups, player lists, and other UI grouping elements.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">width</span>
+            <span class="types"><span class="type">number</span></span>
+           Panel width
+        </li>
+        <li><span class="parameter">height</span>
+            <span class="types"><span class="type">number</span></span>
+          Panel height
+        </li>
+        <li><span class="parameter">radius</span>
+            <span class="types"><span class="type">number</span></span>
+         Corner radius
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "uiDrawTextPanel"></a>
+    <strong>uiDrawTextPanel (message[, alpha])</strong>
+    </dt>
+    <dd>
+    Draw a text panel with background and padding (client). </p>
+
+<p> Common for notifications or tooltips within mplib UI.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">message</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Text to display
+        </li>
+        <li><span class="parameter">alpha</span>
+            <span class="types"><span class="type">number</span></span>
+          Opacity multiplier
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "uiDrawTextAndImagePanel"></a>
+    <strong>uiDrawTextAndImagePanel (message, imageItem[, alpha])</strong>
+    </dt>
+    <dd>
+    Draw a panel containing text and an image icon (client). </p>
+
+<p> Often used for objective info.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">message</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Text to display
+        </li>
+        <li><span class="parameter">imageItem</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+           Table containing:
+  * <code>path</code> (string) Image path
+  * <code>color</code> (table) {r,g,b}
+        </li>
+        <li><span class="parameter">alpha</span>
+            <span class="types"><span class="type">number</span></span>
+          Opacity multiplier
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2025-12-09 10:41:23 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

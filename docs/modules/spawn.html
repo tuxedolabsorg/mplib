@@ -1,0 +1,461 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>mplib</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/countdown.html">countdown</a></li>
+  <li><a href="../modules/eventlog.html">eventlog</a></li>
+  <li><a href="../modules/hud.html">hud</a></li>
+  <li><strong>spawn</strong></li>
+  <li><a href="../modules/spectate.html">spectate</a></li>
+  <li><a href="../modules/stats.html">stats</a></li>
+  <li><a href="../modules/teams.html">teams</a></li>
+  <li><a href="../modules/tools.html">tools</a></li>
+  <li><a href="../modules/ui.html">ui</a></li>
+  <li><a href="../modules/util.html">util</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>spawn</code></h1>
+<p>Spawn</p>
+
+<p> This system manages player spawning and respawning in a multiplayer game session.</p>
+<p>
+
+<p> It supports timed respawns, custom spawn locations, team-based spawn grouping,
+ and configurable player loadouts.</p>
+
+<p> Core responsibilities:</p>
+
+<ul>
+    <li>Automatically respawn dead players after a delay</li>
+    <li>Allow forced respawns (e.g. at round start or by host)</li>
+    <li>Select spawn positions from grouped spawn transforms</li>
+    <li>Apply a configurable loadout upon respawn</li>
+</ul>
+
+<p> Execution context:</p>
+
+<ul>
+    <li>This system is intended to run <strong>server-side only</strong></li>
+    <li>Shared state is synced using the <code>shared.respawnTimeLeft</code> table</li>
+</ul>
+</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#spawnInit">spawnInit ()</a></td>
+	<td class="summary">Initialize the spawn system (server).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#spawnSetSpawnTransforms">spawnSetSpawnTransforms (spawnTransforms[, groupIndex])</a></td>
+	<td class="summary">Set spawn transforms for one or more groups (server).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#spawnSetRespawnTime">spawnSetRespawnTime (respawnTime)</a></td>
+	<td class="summary">Set the automatic respawn delay in seconds (server).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#spawnSetDefaultLoadout">spawnSetDefaultLoadout (loadout)</a></td>
+	<td class="summary">Set the default loadout to apply on respawn (server).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#spawnSetRespawnAtCurrentLocation">spawnSetRespawnAtCurrentLocation (active)</a></td>
+	<td class="summary">Enable or disable respawning at the player's last position (server).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#spawnGetPlayerRespawnTimeLeft">spawnGetPlayerRespawnTimeLeft (player)</a></td>
+	<td class="summary">Get time left until a player will respawn.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#spawnSpawnPlayer">spawnSpawnPlayer (transform, loadout, player)</a></td>
+	<td class="summary">Respawn a player at a given transform and with a given loadout (server).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#spawnRespawnPlayer">spawnRespawnPlayer (playerId)</a></td>
+	<td class="summary">Flag a player for forced respawn on the next tick (server).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#spawnRespawnAllPlayers">spawnRespawnAllPlayers ()</a></td>
+	<td class="summary">Flag all players for forced respawn on the next tick (server).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#spawnTick">spawnTick (dt[, playerGroupList])</a></td>
+	<td class="summary">Main update loop for the spawn system (server).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#spawnGetSpawnTransformGroups">spawnGetSpawnTransformGroups ()</a></td>
+	<td class="summary">Get all current spawn transform groups (server).</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "spawnInit"></a>
+    <strong>spawnInit ()</strong>
+    </dt>
+    <dd>
+    Initialize the spawn system (server). </p>
+
+<p> Resets the internal state. Call this once when setting up the game mode.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "spawnSetSpawnTransforms"></a>
+    <strong>spawnSetSpawnTransforms (spawnTransforms[, groupIndex])</strong>
+    </dt>
+    <dd>
+    Set spawn transforms for one or more groups (server). </p>
+
+<p> Used to define where players can spawn based on group index (e.g. teams).
+ If no <code>groupIndex</code> is provided, all spawn points are assigned to group 1
+ and any previous group information is cleared.</p>
+
+<p> The transforms are of the same type { pos, rot } that is used in the API.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">spawnTransforms</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         List of spawn transforms.
+        </li>
+        <li><span class="parameter">groupIndex</span>
+            <span class="types"><span class="type">number</span></span>
+         Group ID (defaults to 1).
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="comment">-- Set spawn transforms for 2 teams.
+</span><span class="function-name">spawnSetSpawnTransforms</span>(spawnTransformTeam1, <span class="number">1</span>)
+<span class="function-name">spawnSetSpawnTransforms</span>(spawnTransformTeam2, <span class="number">2</span>)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "spawnSetRespawnTime"></a>
+    <strong>spawnSetRespawnTime (respawnTime)</strong>
+    </dt>
+    <dd>
+    Set the automatic respawn delay in seconds (server). </p>
+
+<p> Controls how long a player must remain dead before being automatically
+ respawned by <a href="../modules/spawn.html#spawnTick">spawnTick</a>.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">respawnTime</span>
+            <span class="types"><span class="type">number</span></span>
+         Time in seconds before respawn.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "spawnSetDefaultLoadout"></a>
+    <strong>spawnSetDefaultLoadout (loadout)</strong>
+    </dt>
+    <dd>
+    Set the default loadout to apply on respawn (server). </p>
+
+<p> The loadout is a list of <code>{ toolName, ammoCount }</code> entries, applied in order.
+ All tools are disabled and cleared first, then tools in the loadout are enabled
+ and given the specified ammo. The first entry becomes the active tool.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">loadout</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         List of <code>{ toolName, ammoCount }</code> tables.
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">function</span> server.<span class="function-name">init</span>()
+     defaultLoadout = {
+         {<span class="string">"gun"</span>, <span class="number">7</span>},
+         {<span class="string">"sledge"</span>, <span class="number">0</span>},
+         {<span class="string">"spraycan"</span>, <span class="number">0</span>},
+         {<span class="string">"extinguisher"</span>, <span class="number">0</span>}
+     }
+     <span class="function-name">spawnSetDefaultLoadout</span>(defaultLoadout)
+<span class="keyword">end</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "spawnSetRespawnAtCurrentLocation"></a>
+    <strong>spawnSetRespawnAtCurrentLocation (active)</strong>
+    </dt>
+    <dd>
+    Enable or disable respawning at the player's last position (server). </p>
+
+<p> When enabled, players are respawned at the transform where they died instead
+ of at a spawn point chosen from <code>spawnTransformGroups</code>.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">active</span>
+            <span class="types"><span class="type">bool</span></span>
+         <code>true</code> to enable, <code>false</code> to disable.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "spawnGetPlayerRespawnTimeLeft"></a>
+    <strong>spawnGetPlayerRespawnTimeLeft (player)</strong>
+    </dt>
+    <dd>
+    Get time left until a player will respawn. </p>
+
+<p> When the player is alive, this returns <code>0</code>. While dead, the value is updated
+ every tick and rounded up to whole seconds.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">player</span>
+            <span class="types"><span class="type">number</span></span>
+         Player ID.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        Time in seconds until respawn, or <code>0</code> when alive.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "spawnSpawnPlayer"></a>
+    <strong>spawnSpawnPlayer (transform, loadout, player)</strong>
+    </dt>
+    <dd>
+    Respawn a player at a given transform and with a given loadout (server). </p>
+
+<p> If <code>transform</code> is <code>nil</code>, the player is respawned using the engine's default
+ spawn position. When a <code>loadout</code> is provided those tools will be
+ equipped and the current tools will be removed.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">transform</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a> or <span class="type">nil</span></span>
+         Optional spawn transform.
+        </li>
+        <li><span class="parameter">loadout</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a> or <span class="type">nil</span></span>
+           Optional loadout <code>{ {toolName, ammoCount}, ... }</code>.
+        </li>
+        <li><span class="parameter">player</span>
+            <span class="types"><span class="type">number</span></span>
+         Player ID.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "spawnRespawnPlayer"></a>
+    <strong>spawnRespawnPlayer (playerId)</strong>
+    </dt>
+    <dd>
+    Flag a player for forced respawn on the next tick (server). </p>
+
+<p> The player will be respawned immediately during the next <a href="../modules/spawn.html#spawnTick">spawnTick</a> call,
+ regardless of how long they have been dead.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">playerId</span>
+            <span class="types"><span class="type">number</span></span>
+         Player ID.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "spawnRespawnAllPlayers"></a>
+    <strong>spawnRespawnAllPlayers ()</strong>
+    </dt>
+    <dd>
+    Flag all players for forced respawn on the next tick (server). </p>
+
+<p> Useful for round start or when resetting global game state.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "spawnTick"></a>
+    <strong>spawnTick (dt[, playerGroupList])</strong>
+    </dt>
+    <dd>
+    Main update loop for the spawn system (server). </p>
+
+<p> Should be called every tick. For each player it:</p>
+
+<ul>
+    <li>Tracks time spent dead</li>
+    <li>Automatically respawns players once they exceed the configured respawn time</li>
+    <li>Performs forced respawns flagged via <a href="../modules/spawn.html#spawnRespawnPlayer">spawnRespawnPlayer</a> / <a href="../modules/spawn.html#spawnRespawnAllPlayers">spawnRespawnAllPlayers</a></li>
+</ul>
+
+<p> If respawning at current location is disabled, a spawn transform is chosen
+ from the group-based spawn lists using <code>spawnPickSpawnTransform</code>.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">dt</span>
+            <span class="types"><span class="type">number</span></span>
+         Time step in seconds.
+        </li>
+        <li><span class="parameter">playerGroupList</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         Table mapping player IDs to group indices.
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> playerGroupList = {}
+playerGroupList[<span class="number">1</span>] = <span class="number">1</span> <span class="comment">-- player id 1,2,3 is in team 1 and 4,5,6 in team 2
+</span>playerGroupList[<span class="number">2</span>] = <span class="number">1</span>
+playerGroupList[<span class="number">3</span>] = <span class="number">1</span>
+playerGroupList[<span class="number">4</span>] = <span class="number">2</span>
+playerGroupList[<span class="number">5</span>] = <span class="number">2</span>
+playerGroupList[<span class="number">6</span>] = <span class="number">2</span>
+<span class="function-name">spawnTick</span>(dt, playerGroupList)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "spawnGetSpawnTransformGroups"></a>
+    <strong>spawnGetSpawnTransformGroups ()</strong>
+    </dt>
+    <dd>
+    Get all current spawn transform groups (server).
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+        Table mapping group indices to lists of spawn transforms.
+    </ol>
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2025-12-09 10:41:23 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

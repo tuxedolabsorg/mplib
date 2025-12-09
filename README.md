@@ -57,7 +57,8 @@ mod/
 
 ### 2. Include the modules you need
 
-In `mygamemode.lua`, include any `mplib` modules relevant to your mode:
+In your `mygamemode.lua`, include the `mplib` modules relevant to your game mode.  
+The exact combination depends on what systems you want to use.
 
 ```lua
 #include "mplib/countdown.lua"
@@ -68,5 +69,41 @@ In `mygamemode.lua`, include any `mplib` modules relevant to your mode:
 #include "mplib/util.lua"
 #include "mplib/spectate.lua"
 #include "mplib/hud.lua"
+```
 
-#include "myhelperfunctions.lua"  -- your own helper script
+For a working reference, see:
+
+- **The example mod included in this repository**  
+- Teardown’s built-in mod **“Multiplayer Classics”**, which uses most of the modules in `mplib` to implement several game modes
+
+### 3. Follow the Teardown multiplayer client/server model
+
+Teardown's multiplayer scripting uses a clear separation between **server-side** and **client-side** execution:
+
+- `server.*` functions run only on the host  
+- `client.*` functions run on each client  
+- Shared values (`shared.*`) are synchronized automatically by the engine  
+
+`mplib` follows this model closely. In the API documentation:
+
+- Functions that are **server-only** or **client-only** are explicitly annotated  
+- Functions that **can be used in both environments are not annotated**  
+
+Because of this, it is important to:
+
+- Check the annotation before calling a function  
+- Ensure server logic never runs on the client and vice versa  
+- Keep your game mode logic structured around these two environments  
+
+Adhering to the client/server model is essential for correct multiplayer behavior.
+
+### 4. Consult the API documentation
+
+The full API documentation for `mplib` is available here:
+
+https://tuxedolabs.github.io/mplib/
+
+## License
+
+This project is licensed under the MIT License.  
+See the [`LICENSE`](LICENSE) file for the full terms.

@@ -1,0 +1,347 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>mplib</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/countdown.html">countdown</a></li>
+  <li><a href="../modules/eventlog.html">eventlog</a></li>
+  <li><a href="../modules/hud.html">hud</a></li>
+  <li><a href="../modules/spawn.html">spawn</a></li>
+  <li><a href="../modules/spectate.html">spectate</a></li>
+  <li><a href="../modules/stats.html">stats</a></li>
+  <li><a href="../modules/teams.html">teams</a></li>
+  <li><strong>tools</strong></li>
+  <li><a href="../modules/ui.html">ui</a></li>
+  <li><a href="../modules/util.html">util</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>tools</code></h1>
+<p>Multiplayer Tool &amp; Loot System</p>
+
+<p> Server-side system for managing tools, loot crates, and dropped weapons
+ in multiplayer matches.</p>
+<p>
+
+
+<p> Responsibilities:</p>
+
+<ul>
+    <li>Define and manage respawnable loot tiers (tool spawn points)</li>
+    <li>Drop tools with remaining ammo when players die</li>
+    <li>Spawn and manage physical tool bundles (crates and loose drops)</li>
+    <li>Handle tool pickup from world entities</li>
+</ul>
+</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#toolsInit">toolsInit ()</a></td>
+	<td class="summary">Initialize the tool system (server).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#toolsSetRespawnTime">toolsSetRespawnTime (respawnTime)</a></td>
+	<td class="summary">Set the loot respawn time for all tiers (server).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#toolsSetDropToolsOnDeath">toolsSetDropToolsOnDeath (dropTools)</a></td>
+	<td class="summary">Enable or disable dropping tools on player death (server).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#toolsPreventToolDrop">toolsPreventToolDrop (toolId)</a></td>
+	<td class="summary">Prevent a specific tool from being dropped on death (server).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#toolsAddModToolsToLootTable">toolsAddModToolsToLootTable (lootTable[, weight])</a></td>
+	<td class="summary">Add all custom (mod-defined) tools to a loot table.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#toolsAddLootTier">toolsAddLootTier (transforms, lootTable)</a></td>
+	<td class="summary">Add a new loot tier with multiple spawn points (server).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#toolsCleanup">toolsCleanup ()</a></td>
+	<td class="summary">Clean up all active tool bundles and reset loot tiers (server).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#toolsTick">toolsTick (dt)</a></td>
+	<td class="summary">Main server update loop for the tool system (server).</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "toolsInit"></a>
+    <strong>toolsInit ()</strong>
+    </dt>
+    <dd>
+    Initialize the tool system (server). </p>
+
+<p> Resets all loot tiers and tool bundles, sets default configuration, and
+ precomputes tool pickup data used by crates and drops.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "toolsSetRespawnTime"></a>
+    <strong>toolsSetRespawnTime (respawnTime)</strong>
+    </dt>
+    <dd>
+    Set the loot respawn time for all tiers (server). </p>
+
+<p> Controls how long it takes for a loot spawn point to refill after its
+ previous tool has despawned or been picked up.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">respawnTime</span>
+            <span class="types"><span class="type">number</span></span>
+          Time in seconds before loot respawns
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "toolsSetDropToolsOnDeath"></a>
+    <strong>toolsSetDropToolsOnDeath (dropTools)</strong>
+    </dt>
+    <dd>
+    Enable or disable dropping tools on player death (server). </p>
+
+<p> When enabled, tools with remaining ammo are spawned as world drops when
+ a player dies.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">dropTools</span>
+            <span class="types"><span class="type">boolean</span></span>
+          <code>true</code> to enable tool drops; <code>false</code> to disable
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "toolsPreventToolDrop"></a>
+    <strong>toolsPreventToolDrop (toolId)</strong>
+    </dt>
+    <dd>
+    Prevent a specific tool from being dropped on death (server). </p>
+
+<p> Marks a tool ID as non-droppable even if <code>toolsSetDropToolsOnDeath(true)</code>
+ is active.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">toolId</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+          Tool ID to prevent from dropping
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "toolsAddModToolsToLootTable"></a>
+    <strong>toolsAddModToolsToLootTable (lootTable[, weight])</strong>
+    </dt>
+    <dd>
+    Add all custom (mod-defined) tools to a loot table. </p>
+
+<p> Scans <code>game.tool</code> for tools marked with <code>custom=true</code> and inserts them
+ into the provided loot table if they are not already present.
+ A default pickup amount is determined from tool config or falls back
+ to a sensible default.</p>
+
+<p> Can be called on server or client, but typically used when building
+ server loot tables.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">lootTable</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         A list of loot entries to extend
+        </li>
+        <li><span class="parameter">weight</span>
+            <span class="types"><span class="type">number</span></span>
+         Spawn weight to assign to each added tool (default: 3)
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "toolsAddLootTier"></a>
+    <strong>toolsAddLootTier (transforms, lootTable)</strong>
+    </dt>
+    <dd>
+    Add a new loot tier with multiple spawn points (server).
+ A loot tier is a collection of spawn locations and tools with individual spawn configurations.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">transforms</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+          List of TTransform spawn locations
+        </li>
+        <li><span class="parameter">lootTable</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+           List of loot entries
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">lootTables = {}
+lootTables[<span class="number">1</span>] = {
+    {name = <span class="string">"steroid"</span>, weight = <span class="number">10</span>, amount = <span class="number">4</span>},
+    {name = <span class="string">"plank"</span>, weight = <span class="number">2</span>, amount = <span class="number">5</span>}
+}
+lootTables[<span class="number">2</span>] = {
+    {name = <span class="string">"shotgun"</span>, weight = <span class="number">7</span>},
+    {name = <span class="string">"gun"</span>, weight = <span class="number">7</span>},
+    {name = <span class="string">"bomb"</span>, weight = <span class="number">5</span>}
+}
+lootTables[<span class="number">3</span>] = {
+    {name = <span class="string">"rifle"</span>, weight = <span class="number">9</span>},
+    {name = <span class="string">"pipebomb"</span>, weight = <span class="number">5</span>},
+    {name = <span class="string">"rocket"</span>, weight = <span class="number">10</span>},
+    {name = <span class="string">"explosive"</span>, weight = <span class="number">5</span>}
+}
+<span class="function-name">toolsAddLootTier</span>(toolSpawns[<span class="number">1</span>], lootTables[<span class="number">1</span>])
+<span class="function-name">toolsAddLootTier</span>(toolSpawns[<span class="number">2</span>], lootTables[<span class="number">2</span>])
+<span class="function-name">toolsAddLootTier</span>(toolSpawns[<span class="number">3</span>], lootTables[<span class="number">3</span>])</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "toolsCleanup"></a>
+    <strong>toolsCleanup ()</strong>
+    </dt>
+    <dd>
+    Clean up all active tool bundles and reset loot tiers (server). </p>
+
+<p> Deletes all spawned tool entities via <code>_cleanUpToolBundle</code> and clears the
+ loot tier definitions. Typically called when starting a new match or
+ re-initializing the system.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "toolsTick"></a>
+    <strong>toolsTick (dt)</strong>
+    </dt>
+    <dd>
+    Main server update loop for the tool system (server). </p>
+
+<p> Should be called once per frame. Handles:
+ * Despawning tool bundles when all players are far away
+ * Ticking loot tiers and spawning new crates when timers expire
+ * Dropping tools on player death
+ * Handling player interaction with ammo/tool pickup bodies
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">dt</span>
+            <span class="types"><span class="type">number</span></span>
+          Delta time in seconds
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2025-12-09 10:41:23 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>
