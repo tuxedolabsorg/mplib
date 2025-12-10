@@ -101,7 +101,7 @@ Adhering to the client/server model is essential for correct multiplayer behavio
 
 The full API documentation for `mplib` is available here:
 
-https://tuxedolabs.github.io/mplib/
+https://tuxedolabsorg.github.io/mplib/
 
 ## Contributing
 
