@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>mplib</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/countdown.html">countdown</a></li>
+  <li><a href="../modules/eventlog.html">eventlog</a></li>
+  <li><a href="../modules/hud.html">hud</a></li>
+  <li><a href="../modules/spawn.html">spawn</a></li>
+  <li><a href="../modules/spectate.html">spectate</a></li>
+  <li><strong>stats</strong></li>
+  <li><a href="../modules/teams.html">teams</a></li>
+  <li><a href="../modules/tools.html">tools</a></li>
+  <li><a href="../modules/ui.html">ui</a></li>
+  <li><a href="../modules/util.html">util</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>stats</code></h1>
+<p>Stats</p>
+
+<p> Tracks kill and death counts for each player in a multiplayer session.</p>
+<p>
+
+
+<p> Core responsibilities:</p>
+
+<ul>
+    <li>Increment death count for victims</li>
+    <li>Increment kill count for attackers (when valid)</li>
+    <li>Provide API to query per-player kills and deaths</li>
+</ul>
+
+<p> Execution context:</p>
+
+<ul>
+    <li><a href="../modules/stats.html#statsTick">statsTick</a> must be called <strong>server-side</strong></li>
+    <li><a href="../modules/stats.html#statsGetKills">statsGetKills</a> / <a href="../modules/stats.html#statsGetDeaths">statsGetDeaths</a> can be used on both server and client</li>
+</ul>
+</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#statsInit">statsInit ()</a></td>
+	<td class="summary">Initialize the stats (server).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#statsTick">statsTick (playerTeamList)</a></td>
+	<td class="summary">Update player statistics based on <code>playerdied</code> events (server).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#statsGetKills">statsGetKills (playerId)</a></td>
+	<td class="summary">Get the number of kills for a player.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#statsGetDeaths">statsGetDeaths (playerId)</a></td>
+	<td class="summary">Get the number of deaths for a player.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "statsInit"></a>
+    <strong>statsInit ()</strong>
+    </dt>
+    <dd>
+    Initialize the stats (server). </p>
+
+<p> Clears all previously recorded stats. Call this at the start of a
+ match or round.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "statsTick"></a>
+    <strong>statsTick (playerTeamList)</strong>
+    </dt>
+    <dd>
+    Update player statistics based on <code>playerdied</code> events (server). </p>
+
+<p> Processes all <code>playerdied</code> events since the last tick and updates stats.
+ This should be called once per tick on the server during an
+ active match.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">playerTeamList</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a> or <span class="type">nil</span></span>
+         Table mapping player IDs to team identifiers.
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="comment">-- Example
+</span><span class="keyword">local</span> playerGroupList = {}
+playerGroupList[<span class="number">1</span>] = <span class="number">1</span> <span class="comment">-- player id 1,2,3 is in team 1 and 4,5,6 in team 2
+</span>playerGroupList[<span class="number">2</span>] = <span class="number">1</span>
+playerGroupList[<span class="number">3</span>] = <span class="number">1</span>
+playerGroupList[<span class="number">4</span>] = <span class="number">2</span>
+playerGroupList[<span class="number">5</span>] = <span class="number">2</span>
+playerGroupList[<span class="number">6</span>] = <span class="number">2</span>
+<span class="function-name">statsTick</span>(playerGroupList)
+<span class="comment">-- or in a free-for-all game mode
+</span><span class="function-name">statsTick</span>(<span class="keyword">nil</span>)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "statsGetKills"></a>
+    <strong>statsGetKills (playerId)</strong>
+    </dt>
+    <dd>
+    Get the number of kills for a player. </p>
+
+<p> If the player has no recorded stats, returns 0.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">playerId</span>
+            <span class="types"><span class="type">number</span></span>
+         Player ID.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        Number of kills recorded for this player.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "statsGetDeaths"></a>
+    <strong>statsGetDeaths (playerId)</strong>
+    </dt>
+    <dd>
+    Get the number of deaths for a player. </p>
+
+<p> If the player has no recorded stats, returns 0.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">playerId</span>
+            <span class="types"><span class="type">number</span></span>
+         Player ID.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        Number of deaths recorded for this player.
+    </ol>
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2025-12-09 10:41:23 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

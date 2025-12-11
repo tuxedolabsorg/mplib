@@ -1,0 +1,251 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>mplib</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><strong>countdown</strong></li>
+  <li><a href="../modules/eventlog.html">eventlog</a></li>
+  <li><a href="../modules/hud.html">hud</a></li>
+  <li><a href="../modules/spawn.html">spawn</a></li>
+  <li><a href="../modules/spectate.html">spectate</a></li>
+  <li><a href="../modules/stats.html">stats</a></li>
+  <li><a href="../modules/teams.html">teams</a></li>
+  <li><a href="../modules/tools.html">tools</a></li>
+  <li><a href="../modules/ui.html">ui</a></li>
+  <li><a href="../modules/util.html">util</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>countdown</code></h1>
+<p>Countdown</p>
+
+<p> These functions provide the ability to display a countdown timer
+ that also locks players during countdown.</p>
+<p>
+<p> </p>
+
+<p> Countdown timer should be initialized and ticked server-side and
+ drawn on client-side. Audio is played during countdown.</p>
+
+
+<pre>
+<span class="comment">-- Example of typical usage
+</span><span class="keyword">function</span> server.<span class="function-name">init</span>()
+    <span class="function-name">countdownInit</span>(<span class="number">3.0</span>)
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> server.<span class="function-name">tick</span>(dt)
+    <span class="keyword">if</span> <span class="function-name">countdownTick</span>(dt) <span class="keyword">then</span>
+        <span class="keyword">return</span> <span class="comment">-- Match hasn't started yet..
+</span>    <span class="keyword">end</span>
+
+    <span class="comment">-- countdown is now done!
+</span>    <span class="comment">-- do game logic.
+</span><span class="keyword">end</span>
+
+<span class="keyword">function</span> client.<span class="function-name">draw</span>()
+    <span class="function-name">countdownDraw</span>()
+<span class="keyword">end</span>
+</pre>
+
+</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#countdownInit">countdownInit (countdownSeconds)</a></td>
+	<td class="summary">Initialize count down timer (server)</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#countdownTick">countdownTick (dt)</a></td>
+	<td class="summary">Tick down the timer (server)</p>
+
+<p> Decrement the timer by <code>dt</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#countdownDraw">countdownDraw ()</a></td>
+	<td class="summary">Draw the countdown timer (client)</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#countdownDone">countdownDone ()</a></td>
+	<td class="summary">Check if countdown is complete.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#countdownGetTime">countdownGetTime ()</a></td>
+	<td class="summary">Get remaining time.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "countdownInit"></a>
+    <strong>countdownInit (countdownSeconds)</strong>
+    </dt>
+    <dd>
+    Initialize count down timer (server)  Initializes a count down timer that can be displayed for all players.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">countdownSeconds</span>
+            <span class="types"><span class="type">number</span></span>
+         Time in seconds that represents the duration of the countdown.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "countdownTick"></a>
+    <strong>countdownTick (dt)</strong>
+    </dt>
+    <dd>
+    Tick down the timer (server)</p>
+
+<p> Decrement the timer by <code>dt</code>.  Players are locked during countdown.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">dt</span>
+            <span class="types"><span class="type">number</span></span>
+         Time in seconds that represents the duration of the countdown.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bool</span></span>
+        true if the timer is still active.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "countdownDraw"></a>
+    <strong>countdownDraw ()</strong>
+    </dt>
+    <dd>
+    Draw the countdown timer (client)  Draws the countdown timer and a 'Match starts in...' label.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bool</span></span>
+        true if the timer is still active.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "countdownDone"></a>
+    <strong>countdownDone ()</strong>
+    </dt>
+    <dd>
+    Check if countdown is complete. </p>
+
+<p> Used to check if the countdown is finished or still progressing.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bool</span></span>
+        true if the countdown has reached 0.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "countdownGetTime"></a>
+    <strong>countdownGetTime ()</strong>
+    </dt>
+    <dd>
+    Get remaining time. </p>
+
+<p> Returns the remaining time, clamped to 0
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        Remaining time.
+    </ol>
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2025-12-09 10:41:23 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

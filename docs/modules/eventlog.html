@@ -1,0 +1,226 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>mplib</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/countdown.html">countdown</a></li>
+  <li><strong>eventlog</strong></li>
+  <li><a href="../modules/hud.html">hud</a></li>
+  <li><a href="../modules/spawn.html">spawn</a></li>
+  <li><a href="../modules/spectate.html">spectate</a></li>
+  <li><a href="../modules/stats.html">stats</a></li>
+  <li><a href="../modules/teams.html">teams</a></li>
+  <li><a href="../modules/tools.html">tools</a></li>
+  <li><a href="../modules/ui.html">ui</a></li>
+  <li><a href="../modules/util.html">util</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>eventlog</code></h1>
+<p>Event Log</p>
+
+<p> Functionality to display a list of game events in the top-right corner.</p>
+<p>
+
+<p> Event log messages are posted on the server and then broadcasted
+ to all players. </p>
+
+<p> The <code>items</code> used to construct a message is designed
+ to allow mods to express a wide variety of events.
+ By calling eventlogTick(..) player death events will automatically be
+ posted.</p>
+
+<p> The client-side of the script will only need to call eventlogDraw(..).</p>
+
+<pre>
+<span class="comment">-- Example that uses all of the eventlog functions.
+</span><span class="keyword">function</span> server.<span class="function-name">tick</span>(dt)
+    <span class="function-name">eventlogTick</span>(dt)
+
+    <span class="comment">-- mod/game mode stuff
+</span>
+    <span class="keyword">if</span> somethingNoteworthy <span class="keyword">then</span>
+        <span class="comment">-- Posted events will be shared with all players.
+</span>        <span class="function-name">eventlogPostMessage</span>({playerId, <span class="string">"did something cool!"</span>}, <span class="number">5.0</span>)
+        somethingNoteworthy = <span class="keyword">false</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> client.<span class="function-name">draw</span>(dt)
+    <span class="comment">-- Draw the events client-side.
+</span>    <span class="function-name">eventlogDraw</span>(dt)
+<span class="keyword">end</span>
+</pre>
+
+</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#eventlogPostMessage">eventlogPostMessage (items, time)</a></td>
+	<td class="summary">Post a message to the event log (server).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#eventlogTick">eventlogTick (dt)</a></td>
+	<td class="summary">Tick the event log (server).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#eventlogDraw">eventlogDraw (dt[, playerColors])</a></td>
+	<td class="summary">Draw event log notifications on screen (client).</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "eventlogPostMessage"></a>
+    <strong>eventlogPostMessage (items, time)</strong>
+    </dt>
+    <dd>
+    Post a message to the event log (server). </p>
+
+<p> Constructs a message for the eventlog from <code>items</code> and broadcasts the message to all players.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">items</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         A list of "items" to put together in the message (in order).
+        </li>
+        <li><span class="parameter">time</span>
+            <span class="types"><span class="type">number</span></span>
+         The duration that the message should last (in seconds).</p>
+
+<p> An item can have:</p>
+<pre><code> text (string): Text to display on the item
+ textColor (table): color of the text. The table can have 3 numbers: {r, g, b}
+ color (table): Background color of the item. The table can have 3 numbers: {r, g, b}
+ icon (string): Path to icon image
+ iconTint (table): Color tint of the icon
+ playerId (number): Player ID associated with the item. Used to automatically
+     determine other properties like the background color and icon.
+     Also highlights the text in yellow when the ID matches the client
+ iconRight (boolean): Moves the icon to be positioned on the right of the text
+</code></pre>
+
+<p> An item can also be automatically converted to a table from:
+ * a string. automatically converted to a table in the form: <code>{text = x}</code>
+ * a number. automatically converted to a table in the form: <code>{playerId = x}</code>
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "eventlogTick"></a>
+    <strong>eventlogTick (dt)</strong>
+    </dt>
+    <dd>
+    Tick the event log (server). </p>
+
+<p> Detects <code>playerdied</code> events and posts a relevant message.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">dt</span>
+            <span class="types"><span class="type">number</span></span>
+         Time step
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "eventlogDraw"></a>
+    <strong>eventlogDraw (dt[, playerColors])</strong>
+    </dt>
+    <dd>
+    Draw event log notifications on screen (client). </p>
+
+<p> The <code>playerColors</code> table is used to set the color of an item in a message,
+ that is related to a specific player.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">dt</span>
+            <span class="types"><span class="type">number</span></span>
+         Delta time used to decrement messages display time.
+        </li>
+        <li><span class="parameter">playerColors</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         A table that maps playerId to color {r,g,b}.
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2025-12-09 10:41:23 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

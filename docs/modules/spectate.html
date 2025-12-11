@@ -1,0 +1,242 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>mplib</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/countdown.html">countdown</a></li>
+  <li><a href="../modules/eventlog.html">eventlog</a></li>
+  <li><a href="../modules/hud.html">hud</a></li>
+  <li><a href="../modules/spawn.html">spawn</a></li>
+  <li><strong>spectate</strong></li>
+  <li><a href="../modules/stats.html">stats</a></li>
+  <li><a href="../modules/teams.html">teams</a></li>
+  <li><a href="../modules/tools.html">tools</a></li>
+  <li><a href="../modules/ui.html">ui</a></li>
+  <li><a href="../modules/util.html">util</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>spectate</code></h1>
+<p>Multiplayer Spectator System</p>
+
+<p> Client-side spectating logic for multiplayer.</p>
+<p>
+
+<p> Spectate mode will be enabled when the local player dies.</p>
+
+<p> Provides:</p>
+
+<ul>
+    <li>Third-person camera when local player is dead</li>
+    <li>Smooth transitions into spectate mode</li>
+    <li>Mouse-based camera orbit and zoom</li>
+    <li>Player cycling with mouse buttons</li>
+    <li>Optional map handling and outlines for spectated player/vehicle</li>
+</ul>
+
+<p> All functions in this module are intended to run on the <strong>client</strong>.</p>
+
+<p> Example usage:</p>
+
+
+<pre>
+<span class="keyword">function</span> client.<span class="function-name">tick</span>()
+    <span class="function-name">spectateTick</span>(<span class="function-name">GetAllPlayers</span>())
+ <span class="keyword">end</span>
+
+<span class="keyword">function</span> client.<span class="function-name">draw</span>()
+    <span class="function-name">spectateDraw</span>()
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> client.<span class="function-name">render</span>(dt)
+    <span class="function-name">spectateRender</span>(dt)
+<span class="keyword">end</span>
+</pre>
+
+</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#spectateTick">spectateTick (playerList)</a></td>
+	<td class="summary">Update spectate state and current target based on player health and events (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#spectateDraw">spectateDraw ()</a></td>
+	<td class="summary">Draw spectate HUD elements and handle player switching (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#spectateRender">spectateRender (dt)</a></td>
+	<td class="summary">Update and render the spectator camera (client).</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "spectateTick"></a>
+    <strong>spectateTick (playerList)</strong>
+    </dt>
+    <dd>
+
+<p>Update spectate state and current target based on player health and events (client). </p>
+
+<p> Spectate mode is automatically enabled when the local player dies.
+ Call this once per frame from your main tick function on the client.</p>
+
+<p> Responsibilities:</p>
+
+<ul>
+    <li>Enable/disable spectate mode when the local player dies or respawns</li>
+    <li>Track the attacker when the local player is killed</li>
+    <li>Filter and store a clean list of valid spectatable players</li>
+    <li>Ensure current spectated player remains valid, or select a new one</li>
+</ul>
+
+
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">playerList</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+          List of player IDs to consider for spectating
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="comment">-- Example usage in client tick function
+</span><span class="function-name">spectateTick</span>({}) <span class="comment">-- pass an empy list to only allow spectating the local player
+</span><span class="function-name">spectateTick</span>(<span class="function-name">GetAllPlayers</span>()) <span class="comment">-- will be able to spectate all players
+</span><span class="function-name">specateTick</span>(<span class="function-name">teamsGetLocalTeamPlayers</span>()) <span class="comment">-- will spectate all players in the local team</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "spectateDraw"></a>
+    <strong>spectateDraw ()</strong>
+    </dt>
+    <dd>
+
+<p>Draw spectate HUD elements and handle player switching (client). </p>
+
+<p> Call this from your UI/draw loop when spectate mode should be active.</p>
+
+<p> Responsibilities:</p>
+
+<ul>
+    <li>Cycle between available players using:
+    <ul>
+        <li>Left mouse button  -> next player</li>
+        <li>Right mouse button -> previous player</li>
+    </ul></li>
+    <li>Draw a label with the current spectated player's name, if enabled</li>
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "spectateRender"></a>
+    <strong>spectateRender (dt)</strong>
+    </dt>
+    <dd>
+
+<p>Update and render the spectator camera (client). </p>
+
+<p> Call this once per frame from your client render loop.</p>
+
+<p> Responsibilities:</p>
+
+<ul>
+    <li>Handle map state integration (disabling map, blending from map camera)</li>
+    <li>Smoothly interpolate into spectate camera transform</li>
+    <li>Position camera behind spectated target (player or vehicle)</li>
+    <li>Avoid clipping into world geometry using raycasts and occlusion checks</li>
+    <li>Draw outlines around the spectated player/vehicle and temporary outline
+    around the attacker (if any)</li>
+</ul>
+
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">dt</span>
+            <span class="types"><span class="type">number</span></span>
+          Delta time in seconds
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2025-12-09 10:41:23 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

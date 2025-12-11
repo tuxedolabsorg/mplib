@@ -1,0 +1,1014 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>mplib</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/countdown.html">countdown</a></li>
+  <li><a href="../modules/eventlog.html">eventlog</a></li>
+  <li><strong>hud</strong></li>
+  <li><a href="../modules/spawn.html">spawn</a></li>
+  <li><a href="../modules/spectate.html">spectate</a></li>
+  <li><a href="../modules/stats.html">stats</a></li>
+  <li><a href="../modules/teams.html">teams</a></li>
+  <li><a href="../modules/tools.html">tools</a></li>
+  <li><a href="../modules/ui.html">ui</a></li>
+  <li><a href="../modules/util.html">util</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>hud</code></h1>
+<p>Multiplayer HUD utilities</p>
+
+<p> This system handles heads-up display (HUD) functionality in multiplayer,
+ including damage feedback, timers, round indicators, scoreboards and
+ world markers.</p>
+<p> Execution context:
+ * Server-side: initialization and game state control (shared via <code>shared._hud</code>)
+ * Client-side: rendering HUD elements and reacting to events</p>
+
+<p> Main features:
+ * Damage numbers and directional damage indicators
+ * Round / match timers and respawn timers
+ * Scoreboards, team score breakdown, and player lists
+ * In-world markers (players, objectives, etc.)
+ * Banners, titles.</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#hudAddUnstuckButton">hudAddUnstuckButton ()</a></td>
+	<td class="summary">Enable the "Unstuck" pause menu button (server).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#hudTick">hudTick (dt)</a></td>
+	<td class="summary">Process HUD-related events and health bar updates (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#hudDrawTimer">hudDrawTimer (time[, alpha])</a></td>
+	<td class="summary">Draw a countdown timer on the screen (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#hudShowBanner">hudShowBanner (text, color)</a></td>
+	<td class="summary">Queue an animated banner to be shown on screen (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#hudDrawScoreboard">hudDrawScoreboard (show, title, columns, groups)</a></td>
+	<td class="summary">Render the in-game scoreboard UI (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#hudDrawResults">hudDrawResults (bannerLabel, bannerColor, title, columns, groups[, continueFunction[, continueLabel]])</a></td>
+	<td class="summary">Render the end-of-match results scoreboard UI (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#hudDrawScore2Teams">hudDrawScore2Teams (team1Color, team1Score, team2Color, team2Score[, alpha])</a></td>
+	<td class="summary">Draw a simple two-team score HUD (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#hudDrawRounds">hudDrawRounds (currentRound, maxRound[, width])</a></td>
+	<td class="summary">Display the current round indicator (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#hudDrawRoundScroreBreakdown">hudDrawRoundScroreBreakdown (header, teamNames, teamColors, scoreTable, drawTotal[, highlightColumn[, minWidth]])</a></td>
+	<td class="summary">Draw a breakdown table of team scores per round (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#hudDrawTitle">hudDrawTitle (dt, title[, show])</a></td>
+	<td class="summary">Draw a animated title banner (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#hudDrawInformationMessage">hudDrawInformationMessage (message, alpha)</a></td>
+	<td class="summary">Draw a centered information message panel (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#hudDrawCountDown">hudDrawCountDown (time)</a></td>
+	<td class="summary">Draw a large numeric countdown in the center of the screen (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#hudDrawRespawnTimer">hudDrawRespawnTimer (time)</a></td>
+	<td class="summary">Draw a respawn countdown for the local player (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#hudDrawPlayerWorldMarkers">hudDrawPlayerWorldMarkers (players, lineOfSightRequired, maxRange[, color])</a></td>
+	<td class="summary">Draw world markers for a list of players (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#hudDrawWorldMarkers">hudDrawWorldMarkers (markers)</a></td>
+	<td class="summary">Draw dynamic in-world markers on the HUD (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#hudDrawDamageIndicators">hudDrawDamageIndicators (dt)</a></td>
+	<td class="summary">Draw directional damage indicators for the local player (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#hudGameIsSetup">hudGameIsSetup ()</a></td>
+	<td class="summary">Check if the game has been set up by the host.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#hudDrawGameSetup">hudDrawGameSetup (settings)</a></td>
+	<td class="summary">Draws the host-only game setup UI and initializes settings (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#hudDrawPlayerList">hudDrawPlayerList ()</a></td>
+	<td class="summary">Draw the current player list (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#hudDrawGameModeHelpText">hudDrawGameModeHelpText (header, text[, headerColor])</a></td>
+	<td class="summary">Draw a game mode help text box (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#hudDrawResultsAnimation">hudDrawResultsAnimation (time, text[, backgroundColor])</a></td>
+	<td class="summary">Draw the animated end-of-match banner and camera motion (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#hudDrawFade">hudDrawFade (dt)</a></td>
+	<td class="summary">Draw a full-screen fade effect based on queued events (client).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#hudDrawBanner">hudDrawBanner (dt)</a></td>
+	<td class="summary">Draw banners (client).</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "hudAddUnstuckButton"></a>
+    <strong>hudAddUnstuckButton ()</strong>
+    </dt>
+    <dd>
+    Enable the "Unstuck" pause menu button (server). </p>
+
+<p> Allows clients to respawn themselves if stuck in the environment.
+ This button has a cooldown of 10 seconds per client.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "hudTick"></a>
+    <strong>hudTick (dt)</strong>
+    </dt>
+    <dd>
+    Process HUD-related events and health bar updates (client). </p>
+
+<p> Handles <code>playerhurt</code> events to trigger damage indicators for the
+ local player and updates per-player health bar state. Also adds
+ the "Unstuck" button into the pause menu if enabled.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">dt</span>
+            <span class="types"><span class="type">number</span></span>
+         Delta time in seconds, used to update internal states.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "hudDrawTimer"></a>
+    <strong>hudDrawTimer (time[, alpha])</strong>
+    </dt>
+    <dd>
+    Draw a countdown timer on the screen (client). </p>
+
+<p> Shows time remaining in a human-readable <code>MM:SS</code> format (for example <code>1:25</code>)
+ near the top of the screen. Plays a warning sound during the last seconds.
+ Should be called from the UI render loop.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">time</span>
+            <span class="types"><span class="type">number</span></span>
+         Time in seconds to display.
+        </li>
+        <li><span class="parameter">alpha</span>
+            <span class="types"><span class="type">number</span></span>
+         Alpha multiplier in range [0..1] for fading the timer.
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "hudShowBanner"></a>
+    <strong>hudShowBanner (text, color)</strong>
+    </dt>
+    <dd>
+    Queue an animated banner to be shown on screen (client). </p>
+
+<p> The banner is added to an internal queue and consumed by <a href="../modules/hud.html#hudDrawBanner">hudDrawBanner</a>.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">text</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Text shown in the banner.
+        </li>
+        <li><span class="parameter">color</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         Background color <code>{r, g, b, a}</code> for the banner.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "hudDrawScoreboard"></a>
+    <strong>hudDrawScoreboard (show, title, columns, groups)</strong>
+    </dt>
+    <dd>
+    Render the in-game scoreboard UI (client). </p>
+
+<p> Displays a styled scoreboard with a title, column headers, and grouped rows.
+ Each group can have a name and color, and each row corresponds to a player.
+ The scoreboard animates when opening/closing.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">show</span>
+            <span class="types"><span class="type">bool</span></span>
+         Whether the scoreboard should be visible.
+        </li>
+        <li><span class="parameter">title</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+           Optional title displayed at the top; if empty or <code>nil</code> no title is shown.
+        </li>
+        <li><span class="parameter">columns</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         List of column descriptor tables:
+   * <code>name</code> (string)  Header label.
+   * <code>width</code> (number) Column width in pixels.
+   * <code>align</code> (string, optional) <code>&quot;left&quot;</code>, <code>&quot;center&quot;</code>, or <code>&quot;right&quot;</code>.
+        </li>
+        <li><span class="parameter">groups</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+          List of group tables:
+   * <code>name</code> (string)      Group header text.
+   * <code>color</code> (table)      RGB color <code>{r, g, b}</code>.
+   * <code>outline</code> (bool)     Draw outline around the group (optional).
+   * <code>dim</code> (bool)         De-emphasize style for the group (optional).
+   * <code>rows</code> (table)       List of row tables:
+   * <code>player</code> (number) Player ID.
+   * <code>columns</code> (table) Per-column text values.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "hudDrawResults"></a>
+    <strong>hudDrawResults (bannerLabel, bannerColor, title, columns, groups[, continueFunction[, continueLabel]])</strong>
+    </dt>
+    <dd>
+    Render the end-of-match results scoreboard UI (client). </p>
+
+<p> Shows an animated results banner followed by a scoreboard with per-team
+ results. Includes a button panel allowing the host to choose game modes
+ or continue.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">bannerLabel</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Text used in the initial results banner.
+        </li>
+        <li><span class="parameter">bannerColor</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         Banner background color <code>{r, g, b, a}</code>.
+        </li>
+        <li><span class="parameter">title</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Scoreboard title.
+        </li>
+        <li><span class="parameter">columns</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         List of column descriptor tables (see <a href="../modules/hud.html#hudDrawScoreboard">hudDrawScoreboard</a>).
+        </li>
+        <li><span class="parameter">groups</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         List of group tables (see <a href="../modules/hud.html#hudDrawScoreboard">hudDrawScoreboard</a>).
+        </li>
+        <li><span class="parameter">continueFunction</span>
+            <span class="types"><span class="type">function</span></span>
+         Callback executed when the "Play Again" / continue button is pressed.
+         (<em>optional</em>)
+        </li>
+        <li><span class="parameter">continueLabel</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+          Custom label for the continue button (defaults to <code>&quot;Play Again&quot;</code>).
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        boardWidth   Width of the scoreboard in pixels.</li>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        boardHeight  Height of the scoreboard in pixels.</li>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        param        Animation parameter in range [0..1].</li>
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "hudDrawScore2Teams"></a>
+    <strong>hudDrawScore2Teams (team1Color, team1Score, team2Color, team2Score[, alpha])</strong>
+    </dt>
+    <dd>
+    Draw a simple two-team score HUD (client). </p>
+
+<p> Displays two team scores side by side, each in a colored box, near the top
+ of the screen.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">team1Color</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         Color <code>{r, g, b}</code> for Team 1.
+        </li>
+        <li><span class="parameter">team1Score</span>
+            <span class="types"><span class="type">number</span></span>
+         Score for Team 1.
+        </li>
+        <li><span class="parameter">team2Color</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         Color <code>{r, g, b}</code> for Team 2.
+        </li>
+        <li><span class="parameter">team2Score</span>
+            <span class="types"><span class="type">number</span></span>
+         Score for Team 2.
+        </li>
+        <li><span class="parameter">alpha</span>
+            <span class="types"><span class="type">number</span></span>
+         Alpha multiplier in range [0..1].
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "hudDrawRounds"></a>
+    <strong>hudDrawRounds (currentRound, maxRound[, width])</strong>
+    </dt>
+    <dd>
+    Display the current round indicator (client). </p>
+
+<p> Renders text such as <code>Round 2/5</code> below the main timer.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">currentRound</span>
+            <span class="types"><span class="type">number</span></span>
+         Current round number (starting from 1).
+        </li>
+        <li><span class="parameter">maxRound</span>
+            <span class="types"><span class="type">number</span></span>
+         Total number of rounds in the match.
+        </li>
+        <li><span class="parameter">width</span>
+            <span class="types"><span class="type">number</span></span>
+         Minimum width in pixels for the text box.
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "hudDrawRoundScroreBreakdown"></a>
+    <strong>hudDrawRoundScroreBreakdown (header, teamNames, teamColors, scoreTable, drawTotal[, highlightColumn[, minWidth]])</strong>
+    </dt>
+    <dd>
+    Draw a breakdown table of team scores per round (client). </p>
+
+<p> Displays a table with team names on rows and rounds as columns, optionally
+ including a total column. A specific round column can be highlighted.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">header</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Header text displayed at the top of the table.
+        </li>
+        <li><span class="parameter">teamNames</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         List of team names (<a href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a>).
+        </li>
+        <li><span class="parameter">teamColors</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         List of team colors <code>{r, g, b}</code>.
+        </li>
+        <li><span class="parameter">scoreTable</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+
+<p> List of round score arrays. Each entry is:</p>
+
+<pre><code>scoreTable[round][teamIndex] = score
+</code></pre>
+
+
+        </li>
+        <li><span class="parameter">drawTotal</span>
+            <span class="types"><span class="type">bool</span></span>
+         If <code>true</code>, draw an extra total column for each team.
+        </li>
+        <li><span class="parameter">highlightColumn</span>
+            <span class="types"><span class="type">number</span></span>
+         Round index to visually highlight in the table (&lt;= 0 disables highlight).
+         (<em>optional</em>)
+        </li>
+        <li><span class="parameter">minWidth</span>
+            <span class="types"><span class="type">number</span></span>
+         Minimum width in pixels for the entire table.
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        totalWidth Actual drawn width in pixels.</li>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        totalHeight Actual drawn height in pixels.</li>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">Example
+    <span class="comment">-- construct the score matrix
+</span>    <span class="keyword">local</span> roundScores = {}
+    roundScores[<span class="number">1</span>] = { team1_round1_score, team2_round1_score }
+    roundScores[<span class="number">2</span>] = { team1_round2_score, team2_round2_score }
+    <span class="comment">-- for as many rounds required.
+</span>
+    <span class="keyword">local</span> teamColors = { {<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>}, {<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>} }
+    <span class="keyword">local</span> teamNames = { <span class="string">"Red team"</span>, <span class="string">"Blue team"</span> }
+
+    <span class="function-name">hudDrawRoundScroreBreakdown</span>(<span class="string">"Current score"</span>, teamNames, teamColors, roundScores, <span class="keyword">false</span>, currRound)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "hudDrawTitle"></a>
+    <strong>hudDrawTitle (dt, title[, show])</strong>
+    </dt>
+    <dd>
+    Draw a animated title banner (client). </p>
+
+<p> Fades a title message in and out near the top of the screen.
+ If <code>show</code> is <code>nil</code>, the title will remain visible for
+ 5 seconds and then fade out automatically.</p>
+
+<p> Should be called every frame from the client’s UI draw loop.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">dt</span>
+            <span class="types"><span class="type">number</span></span>
+         Time step in seconds, used for timing and fade animation.
+        </li>
+        <li><span class="parameter">title</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Title text to display.
+        </li>
+        <li><span class="parameter">show</span>
+            <span class="types"><span class="type">bool</span></span>
+         Explicit visibility flag; if <code>nil</code> the function
+   will auto-hide the title after 5 seconds.
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "hudDrawInformationMessage"></a>
+    <strong>hudDrawInformationMessage (message, alpha)</strong>
+    </dt>
+    <dd>
+    Draw a centered information message panel (client). </p>
+
+<p> Renders a small text panel with the specified message near the top of the screen.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">message</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Text to display.
+        </li>
+        <li><span class="parameter">alpha</span>
+            <span class="types"><span class="type">number</span></span>
+         Alpha multiplier in range [0..1] for fading.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "hudDrawCountDown"></a>
+    <strong>hudDrawCountDown (time)</strong>
+    </dt>
+    <dd>
+    Draw a large numeric countdown in the center of the screen (client). </p>
+
+<p> Shows the remaining time as a big number with a fade effect.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">time</span>
+            <span class="types"><span class="type">number</span></span>
+         Remaining time in seconds. Values &lt;= 0 disable rendering.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "hudDrawRespawnTimer"></a>
+    <strong>hudDrawRespawnTimer (time)</strong>
+    </dt>
+    <dd>
+    Draw a respawn countdown for the local player (client). </p>
+
+<p> When <code>time</code> is greater than 0, displays a "Respawn in..." message and a
+ numeric countdown using <a href="../modules/hud.html#hudDrawCountDown">hudDrawCountDown</a>. Also triggers a brief fade
+ effect as the respawn approaches.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">time</span>
+            <span class="types"><span class="type">number</span></span>
+         Remaining respawn time in seconds, or <code>nil</code> / &lt;= 0 if alive.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "hudDrawPlayerWorldMarkers"></a>
+    <strong>hudDrawPlayerWorldMarkers (players, lineOfSightRequired, maxRange[, color])</strong>
+    </dt>
+    <dd>
+    Draw world markers for a list of players (client). </p>
+
+<p> Creates marker entries for each valid remote player and forwards them to
+ <a href="../modules/hud.html#hudDrawWorldMarkers">hudDrawWorldMarkers</a>. Uses the player position and name as label.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">players</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         List of player IDs.
+        </li>
+        <li><span class="parameter">lineOfSightRequired</span>
+            <span class="types"><span class="type">bool</span></span>
+         If <code>true</code>, markers are hidden when occluded.
+        </li>
+        <li><span class="parameter">maxRange</span>
+            <span class="types"><span class="type">number</span></span>
+         Maximum range in meters; markers beyond this are hidden.
+        </li>
+        <li><span class="parameter">color</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         Color <code>{r, g, b, a}</code>; defaults to white.
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "hudDrawWorldMarkers"></a>
+    <strong>hudDrawWorldMarkers (markers)</strong>
+    </dt>
+    <dd>
+    Draw dynamic in-world markers on the HUD (client). </p>
+
+<p> Projects world-space marker positions to screen space and renders labels
+ and/or icons. Markers may include line-of-sight checks, maximum range,
+ and optional health bars for associated players.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">markers</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         List of markers.
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <li><pre class="example">A marker <span class="global">table</span> can have these members:
+    <span class="function-name">pos</span> (Vec3)                  World-space position.
+    <span class="function-name">offset</span> (Vec3)               offset added before projection. (Optional)
+    <span class="function-name">color</span> ({r, g, b, a})        Marker color.
+    <span class="function-name">label</span> (<span class="global">string</span>)              text label. (Optional)
+    <span class="function-name">maxRange</span> (number)           max <span class="function-name">distance</span> (default <span class="number">9999.0</span>). (Optional)
+    <span class="function-name">lineOfSightRequired</span> (bool)  hide when occluded.
+    <span class="function-name">player</span> (number)             player ID used <span class="keyword">for</span> occlusion/vehicle checks. (Optional)
+    <span class="function-name">icon</span> (<span class="global">string</span>)               icon image path. (Optional)
+    <span class="function-name">uiOffset</span> ({x, y})           <span class="number">2</span>D offset after projection. (Optional)
+    <span class="function-name">drawIconInView</span> (bool)       draw icon when marker is on-screen. (Optional)
+    <span class="function-name">iconColor</span> ({r, g, b})       icon color override. (Optional)</pre></li>
+        <li><pre class="example">Example
+   <span class="keyword">local</span> worldMarkers = {}
+   <span class="keyword">for</span> p <span class="keyword">in</span> <span class="function-name">Players</span>() <span class="keyword">do</span>
+       <span class="keyword">local</span> marker = {}
+       marker.pos = <span class="function-name">GetPlayerTransform</span>(p).pos
+       marker.color = {<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>}
+       marker.label = <span class="function-name">GetPlayerName</span>(p)
+       marker.offset = <span class="function-name">Vec</span>(<span class="number">0</span>,<span class="number">2</span>,<span class="number">0</span>)
+       marker.lineOfSightRequired = <span class="keyword">false</span>
+       marker.player = p
+       worldMarkers[<span class="number">1</span> + #worldMarkers] = marker
+   <span class="keyword">end</span>
+   <span class="function-name">hudDrawWorldMarkers</span>(worldMarkers)</pre></li>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "hudDrawDamageIndicators"></a>
+    <strong>hudDrawDamageIndicators (dt)</strong>
+    </dt>
+    <dd>
+    Draw directional damage indicators for the local player (client). </p>
+
+<p> Renders fade-out indicators pointing towards recent damage sources, based on
+ the local player’s orientation and the attack direction.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">dt</span>
+            <span class="types"><span class="type">number</span></span>
+         Delta time in seconds, used to fade indicators.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "hudGameIsSetup"></a>
+    <strong>hudGameIsSetup ()</strong>
+    </dt>
+    <dd>
+    Check if the game has been set up by the host. </p>
+
+<p> Returns the current setup state as managed by the HUD system, typically
+ toggled when the host presses <strong>Start</strong> in <a href="../modules/hud.html#hudDrawGameSetup">hudDrawGameSetup</a>.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bool</span></span>
+        setup <code>true</code> if the game has been set up, <code>false</code> otherwise.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "hudDrawGameSetup"></a>
+    <strong>hudDrawGameSetup (settings)</strong>
+    </dt>
+    <dd>
+
+<p>Draws the host-only game setup UI and initializes settings (client). </p>
+
+<p> <strong>For host</strong>:</p>
+
+<p> Two buttons buttons will be drawn; </p>
+
+<ul>
+    <li><p><em>Start</em> that progresses the setup (<code>hudGameIsSetup()</code> will return true).</p></li>
+    <li><p><em>Settings</em> that toggles the visibility of the settings view where the host can choose settings
+    from those provided.</p></li>
+</ul>
+
+
+<p> <strong>For clients</strong>:</p>
+
+<ul>
+    <li>A message: "Waiting for host ..." is drawn on the screen until the host is done configuring settings.</li>
+</ul>
+
+
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">settings</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         Array of groups containing configuration items.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bool</span></span>
+        started <code>true</code> if the Play/Start button has been pressed, <code>false</code> otherwise.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="comment">-- Example settings table that can be passed to hudDrawGameSetup(...)
+</span><span class="keyword">local</span> settings = {
+  {
+    title = <span class="string">""</span>,
+    items = {
+      {
+        key    = <span class="string">"savegame.mod.settings.time"</span>,
+        label  = <span class="string">"Time"</span>,
+        info   = <span class="string">"Select match time."</span>,
+        options = {
+          { label = <span class="string">"05:00"</span>, value = <span class="number">5</span>*<span class="number">60</span> },
+          { label = <span class="string">"10:00"</span>, value = <span class="number">10</span>*<span class="number">60</span> },
+          { label = <span class="string">"03:00"</span>, value = <span class="number">3</span>*<span class="number">60</span> },
+        }
+      },
+      {
+        key    = <span class="string">"savegame.mod.settings.unlimited"</span>,
+        label  = <span class="string">"Unlimited tool ammo"</span>,
+        info   = <span class="string">"Toggle unlimited ammo"</span>,
+        options = {
+          { label = <span class="string">"On"</span>, value = <span class="number">1</span> }, <span class="comment">-- Use <code>value</code> = 1 or 0 for boolean values.
+</span>          { label = <span class="string">"Off"</span>, value = <span class="number">0</span> },
+        }
+      }
+    }
+  }
+}</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "hudDrawPlayerList"></a>
+    <strong>hudDrawPlayerList ()</strong>
+    </dt>
+    <dd>
+    Draw the current player list (client). </p>
+
+<p> Shows a panel listing all players in the session, highlighting the local
+ player.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "hudDrawGameModeHelpText"></a>
+    <strong>hudDrawGameModeHelpText (header, text[, headerColor])</strong>
+    </dt>
+    <dd>
+    Draw a game mode help text box (client). </p>
+
+<p> Useful for explaining rules or objectives of the current game mode.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">header</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Header text shown at the top of the box. Ignored if nil or "".
+        </li>
+        <li><span class="parameter">text</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Main body text to display.
+        </li>
+        <li><span class="parameter">headerColor</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         Color <code>{r, g, b, a}</code> for the header (defaults to yellow).
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "hudDrawResultsAnimation"></a>
+    <strong>hudDrawResultsAnimation (time, text[, backgroundColor])</strong>
+    </dt>
+    <dd>
+    Draw the animated end-of-match banner and camera motion (client). </p>
+
+<p> Moves the camera, plays intro/outro sounds, and animates a centered banner
+ with the given text.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">time</span>
+            <span class="types"><span class="type">number</span></span>
+         Elapsed animation time in seconds.
+        </li>
+        <li><span class="parameter">text</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Banner text.
+        </li>
+        <li><span class="parameter">backgroundColor</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         Table representing background color (<code>{r, g, b, a}</code>). Defaults to <code>COLOR_BLACK_TRNSP</code>.
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bool</span></span>
+        finished <code>true</code> when the animation has fully finished.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "hudDrawFade"></a>
+    <strong>hudDrawFade (dt)</strong>
+    </dt>
+    <dd>
+    Draw a full-screen fade effect based on queued events (client). </p>
+
+<p> Consumes <code>hudFade</code> events and performs fade-in, hold, and fade-out over time,
+ optionally disabling HUD while fully black.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">dt</span>
+            <span class="types"><span class="type">number</span></span>
+         Delta time in seconds.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "hudDrawBanner"></a>
+    <strong>hudDrawBanner (dt)</strong>
+    </dt>
+    <dd>
+    Draw banners (client). </p>
+
+<p> Draws banners that have been enqueued via <a href="../modules/hud.html#hudShowBanner">hudShowBanner</a>. Should be called
+ continuously to animate and consume the banner queue.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">dt</span>
+            <span class="types"><span class="type">number</span></span>
+         Delta time in seconds used to advance the current banner animation.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2025-12-09 10:41:23 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>
