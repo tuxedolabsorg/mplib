@@ -103,6 +103,10 @@ The full API documentation for `mplib` is available here:
 
 https://tuxedolabsorg.github.io/mplib/
 
+## Versioning
+- The current version is defined in [`mplib/version.lua`](mplib/version.lua) as `MPLIB_VERSION`.
+- See [`CHANGELOG`](CHANGELOG.md) for a list of changes between versions.
+
 ## Contributing
 
 This repository is not currently accepting external pull requests or issues.
