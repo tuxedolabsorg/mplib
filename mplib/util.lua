@@ -197,7 +197,7 @@ function utilGenerateSpawnPoints(count, existingTransforms)
 	table.sort(candidatePoints, function (a, b) return a.score > b.score end )
 
 	local transforms = {}
-	for i=1, count do
+	for i=1, math.min(count, #candidatePoints) do
 		transforms[1 + #transforms] = Transform(candidatePoints[i].pos)
 	end
 	return transforms
