@@ -338,28 +338,30 @@ function teamsDraw(dt)
     local teamBoxWidth = 292
     local teamBoxHeight = 376
 
-    local width = 10 + teamBoxWidth * teamCount + 10 * (teamCount-1) + 10
-    local height = 432
+    local margin = 20
+
+    local width = margin + teamBoxWidth * teamCount + margin * (teamCount-1) + 10
+    local height = 412 + 2*margin
 
     UiPush()
         UiAlign("left top")
         UiTranslate(UiCenter() - width/2, UiMiddle() - height/2)
         uiDrawPanel(width, height, 16)
 
-        UiTranslate(0,10)
+        UiTranslate(0,margin)
 
         UiPush()
             UiTranslate(width/2, 0)
             UiColor(COLOR_WHITE)
             UiFont("bold.ttf", 32 * 1.23)
             UiAlign("center top")
-            UiText("Join a team")
+            UiText("loc@UI_TITLE_JOIN_A_TEAM")
         UiPop()
 
         UiTranslate(0, 36)
 
         UiPush()
-        UiTranslate(10,0)
+        UiTranslate(margin,0)
         for i = 1, teamCount do
             _teamsDrawTeamBox(i, teamBoxWidth, teamBoxHeight)
             UiTranslate(teamBoxWidth + 10,0)
@@ -371,17 +373,17 @@ function teamsDraw(dt)
 
     UiTranslate(UiCenter(), UiMiddle() + 300)
     if shared._teamState.state >= _LOCKED then
-        uiDrawTextPanel("Starting...", 1)
+        uiDrawTextPanel("loc@UI_TEXT_STARTING", 1)
     elseif shared._teamState.state >= _COUNTDOWN then
-        local text = "Locking teams in"
+        local text = "UI_TEXT_LOCKING_TEAMS"
 
         if teamsGetTeamId(GetLocalPlayer()) == 0 then
-            text = "Auto assigning teams in"
+            text = "UI_TEXT_ASSIGNING_TEAMS"
         end
 
-        uiDrawTextPanel(text.." "..clamp(math.ceil(_COUNTDOWNTIME - client._teamState.stateTime), 0.0, _COUNTDOWNTIME), 1)
+        uiDrawTextPanel(GetTranslatedStringByKey(text..","..clamp(math.ceil(_COUNTDOWNTIME - client._teamState.stateTime), 0.0, _COUNTDOWNTIME), 1))
     elseif IsPlayerHost() then
-        uiDrawTextPanel("Waiting for host...", 1)
+        uiDrawTextPanel("loc@UI_TEXT_WAITING_FOR_HOST", 1)
     end
 
     UiPop()
@@ -433,7 +435,7 @@ function _teamsDrawTeamBox(teamId, width, height)
 
         local teamName = shared._teamState.teams[teamId].name
         local color = shared._teamState.teams[teamId].color
-        local bgCol = VecScale(color, 0.75)
+        local bgCol = color
 
         UiColor(bgCol[1], bgCol[2], bgCol[3])
         UiRoundedRectOutline(width, height, 12, 4)
@@ -491,12 +493,12 @@ function _teamsDrawTeamBox(teamId, width, height)
 
         local team = teamsGetTeamId(GetLocalPlayer())
         if team == teamId then
-            if uiDrawSecondaryButton("Leave", width - 2 * 8, shared._teamState.state and shared._teamState.state >= _LOCKED) then
+            if uiDrawSecondaryButton("loc@UI_BUTTON_LEAVE", width - 2 * 8, shared._teamState.state and shared._teamState.state >= _LOCKED) then
                 ServerCall("server._teamsJoinTeam", GetLocalPlayer(), 0)
             end
         else
 
-            if uiDrawSecondaryButton("Join", width - 2 * 8, team ~= 0 or (shared._teamState.state and shared._teamState.state >= _LOCKED)) then
+            if uiDrawSecondaryButton("loc@UI_BUTTON_JOIN", width - 2 * 8, team ~= 0 or (shared._teamState.state and shared._teamState.state >= _LOCKED)) then
                 ServerCall("server._teamsJoinTeam", GetLocalPlayer(), teamId)
             end
         end
@@ -519,13 +521,13 @@ end
 
 function _teamsGetDefaultTeamName(teamId)
     if teamId == 1 then
-        return "Team A"
+        return "loc@TEAM_NAME_TEAM_A"
     elseif teamId == 2 then
-        return "Team B"
+        return "loc@TEAM_NAME_TEAM_B"
     elseif teamId == 3 then
-        return "Team C"
+        return "loc@TEAM_NAME_TEAM_C"
     elseif teamId == 4 then
-        return "Team D"
+        return "loc@TEAM_NAME_TEAM_D"
     end
-    return "Team X"
+    return "loc@TEAM_NAME_TEAM_X"
 end

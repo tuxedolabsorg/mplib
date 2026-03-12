@@ -107,9 +107,9 @@ function hudTick(dt)
 
 		local delta = GetTime() - lastUnstuckTime
 		if delta < 10.0 then
-			PauseMenuButton("Unstuck ("..(math.floor(10.0-delta)+1)..")", "bottom_bar", true)
+			PauseMenuButton(GetTranslatedStringByKey("UI_BUTTON_UNSTUCK").." ("..(math.floor(10.0-delta)+1)..")", "bottom_bar", true)
 		else
-			if PauseMenuButton("Unstuck") then
+			if PauseMenuButton("loc@UI_BUTTON_UNSTUCK") then
 				lastUnstuckTime = GetTime()
 				ServerCall("server._unstuck", GetLocalPlayer())
 			end
@@ -291,7 +291,7 @@ function hudDrawResults(bannerLabel, bannerColor, title, columns, groups, contin
         UiSetCursorState(UI_CURSOR_HIDE_AND_LOCK)
 	end
 
-	continueLabel = continueLabel or "Play Again"
+	continueLabel = continueLabel or "loc@UI_BUTTON_PLAY_AGAIN"
 	SetBool("game.disablemap", true)
 
 	if not _scoreresults_anim then
@@ -344,7 +344,7 @@ function hudDrawResults(bannerLabel, bannerColor, title, columns, groups, contin
 
 			UiPush()
 				UiTranslate(0, 20)
-				if uiDrawSecondaryButton("Game Modes", buttonWidth) then
+				if uiDrawSecondaryButton("loc@UI_BUTTON_GAME_MODES", buttonWidth) then
 					SetBool("game.pausemenu.gamemodes", true)
 				end
 
@@ -429,7 +429,7 @@ function hudDrawRounds(currentRound, maxRound, width)
 
 	UiPush()
 		UiFont(FONT_BOLD, FONT_SIZE_22)
-		local txt = "Round ".. currentRound.."/"..maxRound
+		local txt = GetTranslatedStringByKey("UI_TEXT_ROUND").." ".. currentRound.."/"..maxRound
 		local w,h = UiGetTextSize(txt)
 
 		if width and width > w then
@@ -558,7 +558,7 @@ function hudDrawRoundScroreBreakdown(header, teamNames, teamColors, scoreTable, 
 			UiColor(COLOR_WHITE)
 			UiFont(FONT_BOLD, FONT_SIZE_20)
 			UiAlign("right middle")
-			UiText("Rounds #")
+			UiText("loc@UI_TEXT_ROUND")
 			UiAlign("center middle")
 			
 			if highlightColumn then
@@ -816,7 +816,7 @@ function hudDrawRespawnTimer(time)
 		_hud.fade.fadeOut = 0.5
 	end
 
-	hudDrawInformationMessage("Respawn in...", math.min(time - 0.5,0.25)/0.25)
+	hudDrawInformationMessage("loc@UI_TEXT_RESPAWN_IN", math.min(time - 0.5,0.25)/0.25)
 	hudDrawCountDown(time)
 end
 
@@ -1270,11 +1270,11 @@ function hudDrawGameSetup(settings)
 		UiTranslate(0, 14)
 		UiColor(COLOR_WHITE)
 		UiFont(FONT_BOLD, FONT_SIZE_30)
-		UiText("Host Menu")
+		UiText("loc@UI_TEXT_HOST_MENU")
 		UiTranslate(0, 26 + 10)
 		
 		if hasSettings then
-			if uiDrawSecondaryButton("Game Mode Settings", 290) then
+			if uiDrawSecondaryButton("loc@UI_BUTTON_GAME_MODE_SETTINGS", 290) then
 				_hud.settings.visible = not _hud.settings.visible
 				
 				if _hud.settings.visible then
@@ -1287,7 +1287,7 @@ function hudDrawGameSetup(settings)
 			UiTranslate(0, 40 + 10)
 		end
 
-		if uiDrawPrimaryButton("Start", 290) then
+		if uiDrawPrimaryButton("loc@UI_BUTTON_START", 290) then
 			ServerCall("server.hudPlayPressed")
 			playPressed = true
 		end
@@ -1315,7 +1315,7 @@ function hudDrawPlayerList()
 
 	UiPush()
 
-	local _, maxPlayers = NetSessionGetPlayersCountRange()
+	local maxPlayers = 12
 	local players = GetAllPlayers()
 
 	local headerHeight = 36
@@ -1354,7 +1354,7 @@ function hudDrawPlayerList()
 	UiAlign("center middle")
 	UiColor(COLOR_WHITE)
 	UiFont(FONT_BOLD, FONT_SIZE_30)
-	UiText("Players")
+	UiText("loc@UI_TEXT_PLAYERS")
 	UiPop()
 
 	UiTranslate(0, headerHeight + contentGap)
@@ -1664,7 +1664,13 @@ function _drawSettings(settings)
 	
 	local margin = 30
 	
-	local width = 481
+	UiPush()
+	local titleText = GetTranslatedStringByKey("UI_TITLE_GAME_MODE_SETTINGS")
+	UiFont("bold.ttf", 36 * 1.23)
+	local w, h = UiGetTextSize(titleText)
+	UiPop()
+
+	local width = math.max(520, w + 2*margin)
 	local height = UiHeight() - 60
 	
 	UiPush()
@@ -1678,7 +1684,7 @@ function _drawSettings(settings)
 	UiAlign("center middle")
 	UiFont("bold.ttf", 36 * 1.23)
 	UiColor(COLOR_WHITE)
-	UiText("GAME MODE SETTINGS")
+	UiText(titleText)
 	UiTranslate(0, 36)
 	UiColor(0.53,0.53,0.53,1)
 	UiRect(width-2*margin, 2)
@@ -1720,11 +1726,14 @@ function _drawSettings(settings)
 	
 	UiTranslate(width/2, height - 20 - margin)
 	UiAlign("center middle")
+
+	local buttonGap = 20
+	local buttonWidth = (width - buttonGap - 2*margin)/2
 	
 	UiPush()
-	UiTranslate(-105 - 10,0)
+	UiTranslate(-(buttonWidth + buttonGap)/2,0)
 
-	if uiDrawSecondaryButton("Reset to defaults", 210) then
+	if uiDrawSecondaryButton("loc@UI_BUTTON_RESET", buttonWidth) then
 		for i = 1, #settings do
 			local group = settings[i]
 			for j = 1, #group.items do
@@ -1737,8 +1746,8 @@ function _drawSettings(settings)
 	UiPop()
 
 	UiPush()
-	UiTranslate(105 + 10,0)
-	if uiDrawSecondaryButton("Close", 210) then
+	UiTranslate((buttonWidth + buttonGap)/2,0)
+	if uiDrawSecondaryButton("loc@UI_BUTTON_CLOSE", buttonWidth) then
 		SetValueInTable(_hud.settings, "animation", 0, "easeout", 0.4)
 		_hud.settings.visible = false
 	end
@@ -2122,10 +2131,34 @@ function _drawBoard(title, columns, groups, centered, compact, numbered)
 	
 	local contentWidth = layout.numberedColumnWidth + layout.playerColumnWidth
 	for i = 1, #columns do
-		if columns[i].width ~= nil then
-			contentWidth = contentWidth + columns[i].width
+		if columns[i].width == nil then
+			UiFont(FONT_BOLD, layout.headerRowFontSize)
+			local w, h = UiGetTextSize(columns[i].name)
+			columns[i].width = w + 20
+		end
+
+		contentWidth = contentWidth + columns[i].width
+	end
+
+	if _isTextValid(title) then
+		UiFont(FONT_BOLD, layout.boardTitleFontSize)
+		local w, h = UiGetTextSize(title)
+		if w + 20 > contentWidth then
+
+			-- If title is wider than content, use title width instead
+			local diff = w + 20 - contentWidth
+			local delta = diff / (#columns + 1) -- Distribute extra width across all columns and player name
+			for i = 1, #columns do
+				columns[i].width = columns[i].width + delta
+			end
+			layout.playerColumnWidth = layout.playerColumnWidth + delta
+
+
+			contentWidth = w + 20
 		end
 	end
+
+
 	contentWidth = contentWidth + 10
 	
 	local contentHeight = 0

@@ -320,6 +320,7 @@ function uiDrawButton(title, width, color, hoverColor, outline, disabled)
 		end
 		if UiTextButton(title, width, 40) then
 			pressed = true
+			UiSound("ui/common/click.ogg")
 		end
 
 	UiPop()

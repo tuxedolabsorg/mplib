@@ -187,7 +187,7 @@ function spectateDraw()
 	if not _spectateState.hideLabel then
 		UiPush()
 			UiTranslate(UiCenter(), UiHeight() - 150)
-			uiDrawTextPanel("Spectating: " .. GetPlayerName(_spectateState.currPlayer))
+			uiDrawTextPanel(GetTranslatedStringByKey("loc@UI_TEXT_SPECTATING_PLAYER,"..GetPlayerName(_spectateState.currPlayer)))
 		UiPop()
 	end
 end

@@ -85,7 +85,7 @@ function countdownDraw()
 		client.countdownSeconds = currSeconds
 	end
 
-	hudDrawInformationMessage("Match starts in...", math.min(shared.countdownTimer - 0.5,0.25)/0.25)
+	hudDrawInformationMessage("loc@UI_TEXT_MATCH_STARTS", math.min(shared.countdownTimer - 0.5,0.25)/0.25)
 	hudDrawCountDown(shared.countdownTimer)
 
 	return shared.countdownTimer > 0.0
