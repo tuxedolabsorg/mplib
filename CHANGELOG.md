@@ -1,6 +1,21 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.0.0] - 2026-03-13
+### Added
+- Added localized UI strings across countdown, respawn, spectate, team selection, host setup, results, and pause menu flows.
+- Added click sound feedback to shared UI buttons.
+
+### Changed
+- Updated `mplib/version.lua` to `1.0.0`.
+- Simplified `mplib/mp.lua` includes to use local library-relative paths.
+- Improved HUD and scoreboard layout sizing so long translated labels and titles fit more reliably.
+- Refined team selection presentation with updated spacing, sizing, colors, and localized default team names.
+- Fixed the player list to use a stable 12-player layout.
+
+### Fixed
+- Fixed `utilGenerateSpawnPoints` so it respects the number of generated candidate points instead of indexing past the available results.
+
 ## [0.1.0] - 2025-12-11
 ### Added
 - Initial public release of `mplib`, the multiplayer support library used in Teardown.
