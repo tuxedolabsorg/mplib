@@ -512,7 +512,7 @@ end
 function _drawVehicleOutline(vehicle, r,g,b,a)
 	if a <= 0 then return end
 
-	local bodies = GetVehicleBodies(vehicle)
+	local bodies = GetEntityChildren(vehicle, "", true, "body")
 	_drawBodyOutline(bodies, r,g,b,a)
 end
 
